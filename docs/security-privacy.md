@@ -1,21 +1,15 @@
-﻿# Security and Privacy
+# Security and Privacy
 
-- Validasi extension, MIME, ukuran, encoding, dan content.
-- Sanitasi markup dan blokir path traversal pada upload.
-- Jangan menaruh isi dokumen pada application logs.
-- Temporary session memiliki expiry yang dapat dikonfigurasi.
-- AI eksternal hanya dipanggil untuk ambiguity dengan persetujuan produk yang sesuai.
-- Jangan mengklaim konten tidak digunakan untuk training tanpa kontrak provider yang jelas.
+- Validate extension, MIME, size, encoding, and content at input boundaries.
+- Sanitize markup and block path traversal for future server uploads.
+- Do not put document content, raw references, pasted text, or generated files in logs.
+- Current session persistence is browser-only localStorage with a versioned key.
+- Snapshots expire after 60 minutes, are capped at 4 MB, and malformed/expired values are deleted.
+- Paste content is capped at 2 MB; undo history is capped at 30 states and is not persisted.
+- Export filenames are normalized and limited to prevent unsafe download names.
+- OOXML text is XML-escaped before insertion.
+- No unsafe HTML sink, dynamic execution, shell execution, or committed secret pattern was found in the latest static scan.
+- AI or external metadata providers must not be used without explicit provider privacy guarantees.
 
-## 2026-07-15 audit
-- Static scan found no unsafe HTML sink, dynamic code execution, shell execution, or committed secret patterns.
-- Export now rejects unresolved review and sanitizes generated filenames.
--`npm audit --omit=dev` reports two moderate PostCSS advisories transitively pulled by Next; automatic fix requires a breaking downgrade, so upgrade path remains a tracked dependency task.
-
-
-## Session persistence
-- Session data is stored only in browser localStorage under a versioned key.
-- Snapshots expire after 60 minutes and malformed/expired snapshots are deleted.
-- Snapshot size is capped at 4 MB; paste content is capped at 2 MB.
-- Undo history is bounded to 30 document states and is not persisted.
-- No source content is written to logs.
+## Dependency Advisory
+`npm audit --omit=dev` reports two moderate PostCSS advisories transitively related to Next. Automatic remediation requires a breaking downgrade, so `npm audit fix --force` is not used. A compatible patched upgrade is tracked in `doc-nexts/next-task.md`.

@@ -1,11 +1,24 @@
-﻿# Testing and Quality
+# Testing and Quality
 
-## Required suites
-- Parser fixtures untuk Markdown, plain text, AI output, Unicode, tabel, dan heading.
-- Upload fixtures untuk MD, Markdown, TXT, BOM, UTF-16, empty, oversized, dan MIME mismatch.
-- Citation fixtures untuk author-year, numeric, DOI, URL, footnote, duplicate, dan incomplete references.
-- Export fixtures untuk semantic styles, numbering, tables, captions, headers, footers, and page breaks.
-- E2E flow dari import hingga export.
+## Current Test Suites
+- Ingestion: Markdown/TXT/paste, chapter headings, ambiguity, empty/oversized/unsupported input.
+- Citation: numeric gaps, formatted styles, duplicates, incomplete sources.
+- Template/export: semantic role mapping, valid DOCX ZIP signature.
+- Validation: low-confidence export block and clean-document readiness.
+- Session: expiry, malformed snapshot rejection, bounded undo/redo.
 
-## Quality target
-Target <1% berarti kurang dari 1% undetected defects pada corpus representatif. Low-confidence cases harus menjadi review-required, bukan dipaksakan otomatis.
+## Current Baseline
+- `npm test`: 12 passing tests.
+- `npm run build`: passing.
+- `git diff --check`: required release gate.
+- Static scan: no unsafe HTML sink, dynamic code execution, shell execution, or committed secret pattern found.
+
+## Quality Gates
+- Any low-confidence block requires review before export.
+- Any critical validation issue blocks export.
+- DOCX output must contain required package parts and escaped text.
+- Session snapshots must reject malformed, expired, oversized, or invalid-schema data.
+- No test or log may expose real user document content.
+
+## Target Metric
+The <1% target means less than 1% undetected defects on a representative corpus. Low-confidence cases must be surfaced for review rather than silently guessed.
