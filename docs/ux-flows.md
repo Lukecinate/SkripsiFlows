@@ -23,3 +23,10 @@ Gamification bersifat minimal: progress, checklist, dan quality score. Tidak ada
 - Added a visual three-step guide under #cara-kerja for users unfamiliar with technical workflows.
 - Added a visible 0.1.0 product version tag in the landing footer.
 - Tutorial asset is project-local at public/visuals/how-it-works.svg and includes accessible alternative text.
+
+## Analysis review interaction — 2026-07-15
+- Clicking Analisis bahan opens a focused result modal after parsing.
+- The modal lists detected issues and provides a clear close action.
+- Closing the modal while issues remain highlights affected blocks until manually revised.
+- Each block supports inline edit and explicit delete with confirmation in addition to drag reorder.
+- Editing a block marks it manual/high-confidence; deleting is recorded through the session undo history.
