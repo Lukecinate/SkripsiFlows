@@ -19,3 +19,9 @@ pm audit still reports two moderate advisories for future dependency review.
 - Added deterministic Markdown, Markdown-like TXT, and paste ingestion with provenance and confidence flags.
 - Added three ingestion tests covering headings, ambiguity, and invalid input.
 - Confirmed remote: https://github.com/Lukecinate/SkripsiFlows.git; no push performed.
+
+## Workspace milestone
+- Added /workspace for file upload, paste, deterministic parsing, confidence review, editable blocks, citation-style selection, and structural drag-and-drop.
+- Confirmed 
+pm test and 
+pm run build pass.

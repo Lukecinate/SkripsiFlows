@@ -17,7 +17,7 @@ export default function HomePage() {
           <p className="eyebrow">WORKSPACE SKRIPSI UNTUK MAHASISWA</p>
           <h1>Dari bahan mentah<br /><em>menjadi skripsi.</em></h1>
           <p className="hero-text">Susun hasil riset, output AI, dan referensi menjadi dokumen yang mengikuti format skripsi Indonesia—tanpa bergulat dengan format Word.</p>
-          <div className="hero-actions"><button className="primary-button">Mulai dokumen <span>→</span></button><button className="secondary-button">Lihat cara kerja</button></div>
+          <div className="hero-actions"><a className="primary-button" href="/workspace">Mulai dokumen <span>→</span></a><button className="secondary-button">Lihat cara kerja</button></div>
           <div className="trust-row"><span>✦</span> Tidak perlu akun &nbsp;·&nbsp; File diproses sementara &nbsp;·&nbsp; Review selalu di tanganmu</div>
         </div>
         <div className="hero-card" aria-label="Preview alur SkripsiFlow">
@@ -36,3 +36,4 @@ export default function HomePage() {
     </main>
   );
 }
+
