@@ -30,3 +30,9 @@ pm run build pass.
 - Added reference parsing, citation mismatch detection, duplicate/incomplete checks, and APA 7, IEEE, Vancouver, Harvard, Chicago rendering.
 - Integrated formatted reference preview into /workspace.
 - All six tests and production build pass.
+
+## Template and export milestone
+- Added semantic template registry for the Indonesia standard template.
+- Added OOXML DOCX exporter with document styles, paragraph/table support, and review gate.
+- Integrated browser DOCX download from workspace.
+- Eight tests and production build pass.
