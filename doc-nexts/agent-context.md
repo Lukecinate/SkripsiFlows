@@ -1,4 +1,4 @@
-# Agent Context
+﻿# Agent Context
 
 ## Mandatory Reading
 1. `README.md`
@@ -22,3 +22,6 @@
 - Keep document model and parser independent from UI.
 - Do not invent academic or reference metadata.
 - Run tests, build, and `git diff --check` before push.
+
+## Log size guard
+- Keep doc-logs/2026-07-15-complete-history.md below 1 MB; never append duplicated full history.
