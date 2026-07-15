@@ -42,3 +42,8 @@ Gamification bersifat minimal: progress, checklist, dan quality score. Tidak ada
 - Selected blocks can be deleted together; deletion is confirmation-gated and remains undoable.
 - Selection state is visually distinct and keyboard-labels are provided.
 - Version tag advanced from 0.1.0 to 0.2.0 to reflect the accumulated feature milestone.
+
+## Editable section type — 2026-07-15
+- Each block now has a type selector.
+- Users can convert a paragraph into Subbab/Sub-subbab or another supported structural type.
+- Type changes are undoable through the existing session history and are marked as manual verification.

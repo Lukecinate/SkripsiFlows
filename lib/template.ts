@@ -21,6 +21,7 @@ export const standardIndonesiaTemplate: ThesisTemplate = {
 const registry = new Map([[standardIndonesiaTemplate.id, standardIndonesiaTemplate]]);
 export function getTemplate(templateId = standardIndonesiaTemplate.id): ThesisTemplate { return registry.get(templateId) ?? standardIndonesiaTemplate; }
 export function registerTemplate(template: ThesisTemplate): void { registry.set(template.id, template); }
-export function mapBlockRole(block: DocumentBlock): TemplateRole { if (block.type === "chapter" || block.type === "section") return "heading"; if (block.type === "quote") return "quote"; if (block.type === "table") return "table"; if (block.type === "reference") return "reference"; return "paragraph"; }
+export function mapBlockRole(block: DocumentBlock): TemplateRole { if (block.type === "chapter" || block.type === "section" || block.type === "subchapter") return "heading"; if (block.type === "quote") return "quote"; if (block.type === "table") return "table"; if (block.type === "reference") return "reference"; return "paragraph"; }
 export function resolveBlockStyle(block: DocumentBlock, templateId?: string): TemplateStyle { const template = getTemplate(templateId); return template.styles[mapBlockRole(block)]; }
 export function buildTemplatePreview(document: SkripsiDocument): Array<{ blockId: string; role: TemplateRole; styleId: string }> { return document.blocks.map((block) => ({ blockId: block.id, role: mapBlockRole(block), styleId: resolveBlockStyle(block, document.templateId).styleId })); }
+
