@@ -20,6 +20,8 @@ Harden the document pipeline with a server/API boundary and production-grade DOC
 - Documentation changes are included in the same implementation cycle.
 
 ## Verification
+# Resolved (2026-07-16)
+- PDF export no longer aborts on non-WinAnsi characters (arrows, emoji, CJK, box-drawing, null bytes) via a WinAnsi-safe sanitizer in lib/export-pdf.ts with regression tests.
 ```text
 npm test
 npm run build
