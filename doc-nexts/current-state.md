@@ -1,4 +1,4 @@
-﻿# Current State
+# Current State
 
 ## Product
 - Name: SkripsiFlow.
@@ -37,4 +37,3 @@
 - Complete history mapping: `doc-logs/2026-07-15-complete-history.md`.
 - Product/architecture truth: `docs/`.
 - Next-agent execution context: `doc-nexts/agent-context.md` and `doc-nexts/next-task.md`.
-
