@@ -18,3 +18,8 @@ Gamification bersifat minimal: progress, checklist, dan quality score. Tidak ada
 - Landing navigation now anchors to the feature explanation instead of no-op buttons.
 - Responsive layout reflows hero, feature grid, workspace panels, and session controls below 800px.
 - Focus-visible outlines, readable muted text, and reduced-motion support are included.
+
+## Tutorial visual dan version tag — 2026-07-15
+- Added a visual three-step guide under #cara-kerja for users unfamiliar with technical workflows.
+- Added a visible 0.1.0 product version tag in the landing footer.
+- Tutorial asset is project-local at public/visuals/how-it-works.svg and includes accessible alternative text.
