@@ -14,3 +14,8 @@
 pm run build passes.
 - 
 pm audit still reports two moderate advisories for future dependency review.
+
+## Ingestion implementation
+- Added deterministic Markdown, Markdown-like TXT, and paste ingestion with provenance and confidence flags.
+- Added three ingestion tests covering headings, ambiguity, and invalid input.
+- Confirmed remote: https://github.com/Lukecinate/SkripsiFlows.git; no push performed.
