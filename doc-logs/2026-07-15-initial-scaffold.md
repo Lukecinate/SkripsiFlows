@@ -25,3 +25,8 @@ pm audit still reports two moderate advisories for future dependency review.
 - Confirmed 
 pm test and 
 pm run build pass.
+
+## Citation milestone
+- Added reference parsing, citation mismatch detection, duplicate/incomplete checks, and APA 7, IEEE, Vancouver, Harvard, Chicago rendering.
+- Integrated formatted reference preview into /workspace.
+- All six tests and production build pass.
