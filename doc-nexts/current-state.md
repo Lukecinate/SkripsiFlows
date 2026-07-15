@@ -1,4 +1,4 @@
-# Current State
+﻿# Current State
 
 ## Product
 - Name: SkripsiFlow.
@@ -17,7 +17,7 @@
 - OOXML DOCX export with sanitized filename and unresolved-review gate.
 - Quality score and manual review modal.
 - Local autosave/recovery with 60-minute expiry, 4 MB cap, and bounded undo/redo.
-- Documentation contract under `docs/`, `doc-logs/`, and `doc-nexts/`.
+- Documentation contract under `docs/`, `doc-logs/`, and `doc-nexts/`.\n- Public README documents product purpose, installation, usage, security, architecture, and current limitations.
 
 ## Not Implemented
 - Server-side persistence or accounts.
@@ -37,3 +37,4 @@
 - Complete history mapping: `doc-logs/2026-07-15-complete-history.md`.
 - Product/architecture truth: `docs/`.
 - Next-agent execution context: `doc-nexts/agent-context.md` and `doc-nexts/next-task.md`.
+
