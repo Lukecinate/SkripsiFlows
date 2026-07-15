@@ -14,3 +14,8 @@
 - Changing a block type is a manual edit: it raises confidence to 1 and clears 
 eedsReview.
 - subchapter maps to the semantic heading template role and preserves export compatibility.
+
+## Inline formatting and heading hierarchy
+- Blocks may store metadata.inline as JSON inline segments with old, italic, and underline marks.
+- Markdown # maps to Bab utama, ## to Subbab, and deeper heading levels to Sub-subbab.
+- The exporter converts inline marks into OOXML run properties (w:b, w:i, w:u).

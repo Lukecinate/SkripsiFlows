@@ -29,3 +29,7 @@
 - Generated object URLs are revoked after the download click has time to dispatch.
 - Temporary anchor elements are removed after use.
 - Export errors are caught without exposing stack traces or document contents.
+
+## DOCX integrity — 2026-07-15
+- User text is XML-escaped before run generation.
+- Inline formatting is emitted through fixed OOXML tags; user content cannot inject element markup.

@@ -22,3 +22,7 @@
 
 ## Target Metric
 The <1% target means less than 1% undetected defects on a representative corpus. Low-confidence cases must be surfaced for review rather than silently guessed.
+
+## DOCX integrity fixtures
+- Export tests inspect the DOCX ZIP for required parts and inline OOXML marks.
+- Word-facing regressions must add XML/package assertions before release.
