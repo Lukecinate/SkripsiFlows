@@ -14,8 +14,8 @@
 - Static scan: no unsafe HTML sink, dynamic code execution, shell execution, or committed secret pattern found.
 
 ## Quality Gates
-- Any low-confidence block requires review before export.
-- Any critical validation issue blocks export.
+- Any low-confidence block requires review guidance, but does not block export.
+- Critical validation issues remain visible; export availability is independent of quality score.
 - DOCX output must contain required package parts and escaped text.
 - Session snapshots must reject malformed, expired, oversized, or invalid-schema data.
 - No test or log may expose real user document content.

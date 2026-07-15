@@ -196,7 +196,7 @@ export default function WorkspacePage() {
   };
   const downloadDocx = async () => {
     if (!document || !validation?.canExport) {
-      setMessage("Selesaikan error kritis sebelum export.");
+      setMessage("Export tidak tersedia tanpa dokumen.");
       return;
     }
     try {
@@ -679,7 +679,7 @@ export default function WorkspacePage() {
                 ? validation.reviewCount
                   ? "Siap diekspor dengan catatan review."
                   : "Dokumen siap diekspor."
-                : "Selesaikan error kritis sebelum export."}
+                : "Export tidak tersedia tanpa dokumen."}
             </p>
           </div>
           {validation && !validation.canExport && (
@@ -730,7 +730,7 @@ export default function WorkspacePage() {
             <button
               className="primary-button"
               onClick={downloadDocx}
-              disabled={!document || reviewCount > 0}
+              disabled={!document}
             >
               Unduh DOCX <span>↓</span>
             </button>

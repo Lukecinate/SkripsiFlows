@@ -7,7 +7,7 @@
 - `confidence` berada pada rentang 0..1.
 - `needsReview` true jika interpretasi tidak aman.
 - Setiap reference mempertahankan `raw` untuk audit dan pemulihan manual.
-- `reviewRequired` true jika terdapat block atau reference kritis yang belum valid.
+- `reviewRequired` records review state for guidance; it does not block DOCX export.
 
 ## Editable section types
 - Supported user-facing block types include Bab utama (chapter), Subbab (section), Sub-subbab (subchapter), Paragraf, Kutipan, Daftar, Tabel, and Referensi.

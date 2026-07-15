@@ -19,7 +19,7 @@
 ## Invariants
 - Parser does not silently invent academic or reference metadata.
 - Ambiguity is represented with confidence and `needsReview`.
-- Export rejects unresolved review or critical validation errors.
+- Export never uses quality score or review warnings as a permission gate.
 - Untrusted text is XML-escaped before OOXML insertion.
 - Output filenames are normalized and length-limited.
 - Session snapshots are versioned, size-limited, expiry-limited, and browser-only.
@@ -27,3 +27,7 @@
 
 ## Future Boundary
 A server/API layer may be introduced for larger documents and DOC conversion. It must enforce request limits, safe error envelopes, rate limiting, and content-free logs before accepting document payloads.
+
+## Export policy
+- Quality score is advisory and never acts as an export permission gate.
+- exportDocx enforces only the minimum document object needed to generate a file; the UI may export documents with warnings or a score of 0/100.
