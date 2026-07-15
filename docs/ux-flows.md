@@ -1,4 +1,4 @@
-﻿# UX Flows
+# UX Flows
 
 1. Landing → Mulai dokumen.
 2. Pilih upload atau paste.
@@ -36,3 +36,9 @@ Gamification bersifat minimal: progress, checklist, dan quality score. Tidak ada
 - Redesigned the analysis dialog as a structured panel: status header, explanatory copy, issue rows, and a single clear action.
 - Modal backdrop uses restrained green tint and blur to preserve context without competing with the review content.
 - Warning rows combine icon, text, border, and amber surface so the state is not color-only.
+
+## Bulk block operations and release version — 2026-07-15
+- Added per-block checkboxes and Pilih semua for batch workflows.
+- Selected blocks can be deleted together; deletion is confirmation-gated and remains undoable.
+- Selection state is visually distinct and keyboard-labels are provided.
+- Version tag advanced from 0.1.0 to 0.2.0 to reflect the accumulated feature milestone.
