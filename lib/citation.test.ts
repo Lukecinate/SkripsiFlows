@@ -1,0 +1,7 @@
+﻿import test from "node:test";
+import assert from "node:assert/strict";
+import { analyzeCitations, formatReference, parseReferences } from "./citation";
+
+test("parses references and identifies numeric citation gaps", () => { const references = parseReferences("Andi, A. (2024). Sistem Informasi Akademik. https://example.com\nBudi, B. (2023). Data Kampus."); const analysis = analyzeCitations("Penelitian terdahulu [1] dan sumber hilang [3].", references); assert.equal(references.length, 2); assert.ok(analysis.issues.some((issue) => issue.code === "MISSING_REFERENCE")); assert.ok(analysis.issues.some((issue) => issue.code === "UNCITED_REFERENCE")); });
+test("renders supported citation styles without inventing metadata", () => { const reference = parseReferences("Andi, A. (2024). Sistem Informasi Akademik. https://example.com")[0]; for (const style of ["apa-7", "ieee", "vancouver", "harvard", "chicago"] as const) assert.match(formatReference(reference, style, 0), /Sistem Informasi Akademik/); });
+test("flags duplicate and incomplete references", () => { const references = parseReferences("Andi, A. (2024). Sistem Informasi Akademik.\nAndi, A. (2024). Sistem Informasi Akademik."); const analysis = analyzeCitations("[1]", references); assert.ok(analysis.issues.some((issue) => issue.code === "DUPLICATE_REFERENCE")); assert.ok(analysis.issues.some((issue) => issue.code === "INCOMPLETE_REFERENCE")); });
