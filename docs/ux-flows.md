@@ -30,3 +30,9 @@ Gamification bersifat minimal: progress, checklist, dan quality score. Tidak ada
 - Closing the modal while issues remain highlights affected blocks until manually revised.
 - Each block supports inline edit and explicit delete with confirmation in addition to drag reorder.
 - Editing a block marks it manual/high-confidence; deleting is recorded through the session undo history.
+
+## Analysis modal visual alignment — 2026-07-15
+- Restored the warmer cream/green surface palette for workspace dialogs.
+- Redesigned the analysis dialog as a structured panel: status header, explanatory copy, issue rows, and a single clear action.
+- Modal backdrop uses restrained green tint and blur to preserve context without competing with the review content.
+- Warning rows combine icon, text, border, and amber surface so the state is not color-only.
