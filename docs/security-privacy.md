@@ -14,13 +14,18 @@
 ## Dependency Advisory
 `npm audit --omit=dev` reports two moderate PostCSS advisories transitively related to Next. Automatic remediation requires a breaking downgrade, so `npm audit fix --force` is not used. A compatible patched upgrade is tracked in `doc-nexts/next-task.md`.
 
-## UI security/accessibility review â€” 2026-07-15
+## UI security/accessibility review Ã¢â‚¬â€ 2026-07-15
 - No unsafe HTML sink or dynamic execution introduced by the redesign.
 - Inline SVGs are static source-controlled markup with no user-controlled attributes.
 - Primary/secondary controls have visible keyboard focus styles.
 - Review states use text and borders in addition to color.
 - Contrast palette uses dark navy text/surfaces, light mint action states, and explicit amber review surfaces.
 
-## Export gate adjustment â€” 2026-07-15
+## Export gate adjustment Ã¢â‚¬â€ 2026-07-15
 - Warning findings can be exported because they are review guidance, not a security boundary.
 - Critical validation errors remain enforced in both UI and exporter domain code.
+
+## Download handling â€” 2026-07-15
+- Generated object URLs are revoked after the download click has time to dispatch.
+- Temporary anchor elements are removed after use.
+- Export errors are caught without exposing stack traces or document contents.
