@@ -1,6 +1,6 @@
 # UX Flows
 
-1. Landing → Mulai dokumen.
+1. Landing â†’ Mulai dokumen.
 2. Pilih upload atau paste.
 3. Pilih template dan citation style.
 4. Parse dan tampilkan progress.
@@ -11,7 +11,7 @@
 
 Gamification bersifat minimal: progress, checklist, dan quality score. Tidak ada leaderboard.
 
-## Visual refresh — 2026-07-15
+## Visual refresh â€” 2026-07-15
 - Direction: academic workspace with navy ink, mint action color, and amber review state.
 - Replaced improvised text icons with a consistent inline SVG logo/icon system.
 - Primary action remains visually dominant; secondary actions use low-noise outlines/text.
@@ -19,31 +19,38 @@ Gamification bersifat minimal: progress, checklist, dan quality score. Tidak ada
 - Responsive layout reflows hero, feature grid, workspace panels, and session controls below 800px.
 - Focus-visible outlines, readable muted text, and reduced-motion support are included.
 
-## Tutorial visual dan version tag — 2026-07-15
+## Tutorial visual dan version tag â€” 2026-07-15
 - Added a visual three-step guide under #cara-kerja for users unfamiliar with technical workflows.
 - Added a visible 0.1.0 product version tag in the landing footer.
 - Tutorial asset is project-local at public/visuals/how-it-works.svg and includes accessible alternative text.
 
-## Analysis review interaction — 2026-07-15
+## Analysis review interaction â€” 2026-07-15
 - Clicking Analisis bahan opens a focused result modal after parsing.
 - The modal lists detected issues and provides a clear close action.
 - Closing the modal while issues remain highlights affected blocks until manually revised.
 - Each block supports inline edit and explicit delete with confirmation in addition to drag reorder.
 - Editing a block marks it manual/high-confidence; deleting is recorded through the session undo history.
 
-## Analysis modal visual alignment — 2026-07-15
+## Analysis modal visual alignment â€” 2026-07-15
 - Restored the warmer cream/green surface palette for workspace dialogs.
 - Redesigned the analysis dialog as a structured panel: status header, explanatory copy, issue rows, and a single clear action.
 - Modal backdrop uses restrained green tint and blur to preserve context without competing with the review content.
 - Warning rows combine icon, text, border, and amber surface so the state is not color-only.
 
-## Bulk block operations and release version — 2026-07-15
+## Bulk block operations and release version â€” 2026-07-15
 - Added per-block checkboxes and Pilih semua for batch workflows.
 - Selected blocks can be deleted together; deletion is confirmation-gated and remains undoable.
 - Selection state is visually distinct and keyboard-labels are provided.
 - Version tag advanced from 0.1.0 to 0.2.0 to reflect the accumulated feature milestone.
 
-## Editable section type — 2026-07-15
+## Editable section type â€” 2026-07-15
 - Each block now has a type selector.
 - Users can convert a paragraph into Subbab/Sub-subbab or another supported structural type.
 - Type changes are undoable through the existing session history and are marked as manual verification.
+
+## Drag interaction refinement â€” 2026-07-15
+- Dragged blocks lift slightly with a focused shadow and subtle tilt.
+- The active drop target moves to reveal an insertion line and mint surface.
+- Successful drops receive a short pulse confirmation.
+- Drag cleanup runs on drop and drag end to prevent stale visual state.
+- Reduced-motion users receive the same structural feedback without animation.
