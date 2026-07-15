@@ -1,5 +1,6 @@
 ﻿import { NextResponse } from "next/server";
 
 export function GET() {
-  return NextResponse.json({ name: "SkripsiFlow", status: "ok", version: "0.1.0" });
+  return NextResponse.json({ name: "SkripsiFlow", status: "ok", version: "0.2.0" });
 }
+

@@ -35,3 +35,9 @@ A server/API layer may be introduced for larger documents and DOC conversion. It
 ## Export strategy change
 - PDF is now the primary browser export because it avoids Word repair compatibility issues.
 - DOCX implementation remains isolated as legacy code until a valid Word package is fully validated.
+
+## Error boundaries
+- pp/error.tsx handles route-level rendering failures.
+- pp/global-error.tsx handles root-level rendering failures.
+- lib/safe-error.ts centralizes user-safe error copy and recovery guidance.
+- Internal errors remain available to platform diagnostics but are never rendered by the UI.
