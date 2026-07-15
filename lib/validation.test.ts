@@ -1,4 +1,4 @@
-﻿import test from "node:test";
+import test from "node:test";
 import assert from "node:assert/strict";
 import { validateDocument } from "./validation";
 import type { SkripsiDocument } from "./document-model";
@@ -6,4 +6,3 @@ const base: SkripsiDocument = { schemaVersion: 1, id: "x", title: "Demo", templa
 test("allows export while warnings remain", () => { const report = validateDocument(base); assert.equal(report.canExport, true); assert.ok(report.issues.some((issue) => issue.code === "LOW_CONFIDENCE_BLOCK")); });
 test("allows export even with critical validation findings", () => { const invalid = { ...base, title: "" }; const report = validateDocument(invalid); assert.equal(report.canExport, true); });
 test("allows a clean document", () => { const clean = { ...base, blocks: [{ ...base.blocks[0], confidence: 1, confidenceLevel: "high" as const, needsReview: false, content: "Isi dokumen yang sudah diverifikasi." }], reviewRequired: false }; const report = validateDocument(clean); assert.equal(report.canExport, true); assert.equal(report.score, 100); });
-
