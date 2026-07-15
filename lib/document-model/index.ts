@@ -1,7 +1,8 @@
-﻿export type BlockType =
+export type BlockType =
   | "metadata"
   | "chapter"
-  | "section"\n  | "subchapter"
+  | "section"
+  | "subchapter"
   | "paragraph"
   | "list"
   | "table"
@@ -49,4 +50,3 @@ export interface SkripsiDocument {
   createdAt: string;
   updatedAt: string;
 }
-

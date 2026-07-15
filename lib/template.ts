@@ -1,4 +1,4 @@
-﻿import type { DocumentBlock, SkripsiDocument } from "./document-model";
+import type { DocumentBlock, SkripsiDocument } from "./document-model";
 
 export type TemplateRole = "cover" | "heading" | "paragraph" | "quote" | "table" | "reference" | "header" | "footer";
 export interface TemplateStyle { role: TemplateRole; styleId: string; font: string; size: number; bold?: boolean; italic?: boolean; alignment?: "left" | "center" | "right" | "justify"; }
@@ -24,4 +24,3 @@ export function registerTemplate(template: ThesisTemplate): void { registry.set(
 export function mapBlockRole(block: DocumentBlock): TemplateRole { if (block.type === "chapter" || block.type === "section" || block.type === "subchapter") return "heading"; if (block.type === "quote") return "quote"; if (block.type === "table") return "table"; if (block.type === "reference") return "reference"; return "paragraph"; }
 export function resolveBlockStyle(block: DocumentBlock, templateId?: string): TemplateStyle { const template = getTemplate(templateId); return template.styles[mapBlockRole(block)]; }
 export function buildTemplatePreview(document: SkripsiDocument): Array<{ blockId: string; role: TemplateRole; styleId: string }> { return document.blocks.map((block) => ({ blockId: block.id, role: mapBlockRole(block), styleId: resolveBlockStyle(block, document.templateId).styleId })); }
-

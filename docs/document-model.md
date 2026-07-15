@@ -1,4 +1,4 @@
-﻿# Document Model
+# Document Model
 
 `lib/document-model/index.ts` adalah kontrak awal. Semua perubahan breaking harus menaikkan `schemaVersion` dan menambahkan migration note.
 
