@@ -6,14 +6,14 @@
 3. The current release has no server-side document persistence or API ingestion boundary beyond the health route.
 
 ## Data Flow
-`upload/paste -> ingestion -> SkripsiDocument -> validation/citation analysis -> template mapping -> DOCX OOXML -> browser download`
+`upload/paste -> ingestion -> SkripsiDocument -> validation/citation analysis -> template mapping -> PDF document -> browser download`
 
 ## Domain Modules
 - `lib/ingestion.ts`: normalizes source text, detects structural blocks, and assigns provenance/confidence.
 - `lib/citation.ts`: parses references, extracts citation tokens, detects mismatch/duplicate/incomplete cases, and formats styles.
 - `lib/validation.ts`: creates quality score and export eligibility report.
 - `lib/template.ts`: maps block types to semantic template roles.
-- `lib/export-docx.ts`: generates a DOCX ZIP package and sanitizes output filenames.
+- `lib/export-pdf.ts`: generates a paginated PDF and sanitizes output filenames.
 - `lib/session.ts`: validates versioned local snapshots, applies expiry/quota checks, and bounds undo/redo history.
 
 ## Invariants
@@ -31,3 +31,7 @@ A server/API layer may be introduced for larger documents and DOC conversion. It
 ## Export policy
 - Quality score is advisory and never acts as an export permission gate.
 - exportDocx enforces only the minimum document object needed to generate a file; the UI may export documents with warnings or a score of 0/100.
+
+## Export strategy change
+- PDF is now the primary browser export because it avoids Word repair compatibility issues.
+- DOCX implementation remains isolated as legacy code until a valid Word package is fully validated.

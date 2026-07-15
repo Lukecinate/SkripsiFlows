@@ -6,7 +6,7 @@ import {
   formatReference,
   parseReferences,
 } from "../../lib/citation";
-import { exportDocx } from "../../lib/export-docx";
+import { exportPdf } from "../../lib/export-pdf";
 import { validateDocument } from "../../lib/validation";
 import type { DocumentBlock, SkripsiDocument } from "../../lib/document-model";
 import {
@@ -194,13 +194,13 @@ export default function WorkspacePage() {
     setDropPulseId(targetId);
     window.setTimeout(() => setDropPulseId(null), 420);
   };
-  const downloadDocx = async () => {
+  const downloadPdf = async () => {
     if (!document || !validation?.canExport) {
       setMessage("Export tidak tersedia tanpa dokumen.");
       return;
     }
     try {
-      const result = await exportDocx(document, `${document.title || "skripsiflow"}.docx`);
+      const result = await exportPdf(document, `${document.title || "skripsiflow"}.pdf`);
       const blob = new Blob([result.data], { type: result.mimeType });
       const url = URL.createObjectURL(blob);
       const anchor = window.document.createElement("a");
@@ -214,9 +214,9 @@ export default function WorkspacePage() {
         anchor.remove();
         URL.revokeObjectURL(url);
       }, 1000);
-      setMessage("Download DOCX dimulai. Periksa folder Downloads browser-mu.");
+      setMessage("Download PDF dimulai. Periksa folder Downloads browser-mu.");
     } catch {
-      setMessage("DOCX gagal dibuat. Periksa dokumen lalu coba lagi.");
+      setMessage("PDF gagal dibuat. Periksa dokumen lalu coba lagi.");
     }
   };  const deleteBlock = (blockId: string) => {
     setSelectedBlockIds([blockId]);
@@ -313,7 +313,7 @@ export default function WorkspacePage() {
     });
   };
   return (
-    <main className="workspace-page">{message.includes("Download DOCX") && <div className="download-toast" role="status">{message}</div>}
+    <main className="workspace-page">{message.includes("Download PDF") && <div className="download-toast" role="status">{message}</div>}
       <header className="workspace-header shell">
         <a className="brand" href="/">
           <span className="brand-mark" aria-hidden="true">
@@ -729,10 +729,10 @@ export default function WorkspacePage() {
             <span>{message}</span>
             <button
               className="primary-button"
-              onClick={downloadDocx}
+              onClick={downloadPdf}
               disabled={!document}
             >
-              Unduh DOCX <span>↓</span>
+              Unduh PDF <span>↓</span>
             </button>
           </div>
         </section>

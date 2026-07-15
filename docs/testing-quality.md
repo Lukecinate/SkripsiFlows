@@ -26,3 +26,7 @@ The <1% target means less than 1% undetected defects on a representative corpus.
 ## DOCX integrity fixtures
 - Export tests inspect the DOCX ZIP for required parts and inline OOXML marks.
 - Word-facing regressions must add XML/package assertions before release.
+
+## PDF export fixtures
+- Tests verify a valid PDF signature and exportability for a low-confidence document.
+- Word/DOCX generation is not the primary release path until package integrity is validated against Microsoft Word.
