@@ -13,3 +13,10 @@
 
 ## Dependency Advisory
 `npm audit --omit=dev` reports two moderate PostCSS advisories transitively related to Next. Automatic remediation requires a breaking downgrade, so `npm audit fix --force` is not used. A compatible patched upgrade is tracked in `doc-nexts/next-task.md`.
+
+## UI security/accessibility review — 2026-07-15
+- No unsafe HTML sink or dynamic execution introduced by the redesign.
+- Inline SVGs are static source-controlled markup with no user-controlled attributes.
+- Primary/secondary controls have visible keyboard focus styles.
+- Review states use text and borders in addition to color.
+- Contrast palette uses dark navy text/surfaces, light mint action states, and explicit amber review surfaces.

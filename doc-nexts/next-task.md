@@ -1,4 +1,4 @@
-# Next Task
+﻿# Next Task
 
 ## Task
 Harden the document pipeline with a server/API boundary and production-grade DOCX/template validation.
@@ -29,3 +29,4 @@ npm audit --omit=dev
 
 ## Git Rule
 Before every push: `git fetch origin`, `git pull --ff-only origin master`, test, commit with Conventional Commits, push, and verify `git status` plus upstream alignment.
+

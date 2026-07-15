@@ -10,3 +10,11 @@
 8. Export DOCX/DOC.
 
 Gamification bersifat minimal: progress, checklist, dan quality score. Tidak ada leaderboard.
+
+## Visual refresh — 2026-07-15
+- Direction: academic workspace with navy ink, mint action color, and amber review state.
+- Replaced improvised text icons with a consistent inline SVG logo/icon system.
+- Primary action remains visually dominant; secondary actions use low-noise outlines/text.
+- Landing navigation now anchors to the feature explanation instead of no-op buttons.
+- Responsive layout reflows hero, feature grid, workspace panels, and session controls below 800px.
+- Focus-visible outlines, readable muted text, and reduced-motion support are included.
