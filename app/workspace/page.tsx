@@ -195,8 +195,8 @@ export default function WorkspacePage() {
     window.setTimeout(() => setDropPulseId(null), 420);
   };
   const downloadPdf = async () => {
-    if (!document || !validation?.canExport) {
-      setMessage("Export tidak tersedia tanpa dokumen.");
+    if (!document) {
+      setMessage("Masukkan atau pulihkan dokumen terlebih dahulu sebelum export.");
       return;
     }
     try {
@@ -216,7 +216,7 @@ export default function WorkspacePage() {
       }, 1000);
       setMessage("Download PDF dimulai. Periksa folder Downloads browser-mu.");
     } catch {
-      setMessage("PDF gagal dibuat. Periksa dokumen lalu coba lagi.");
+      setMessage("PDF gagal dibuat. Detail teknis disembunyikan. Coba ulangi atau gunakan dokumen yang lebih kecil.");
     }
   };  const deleteBlock = (blockId: string) => {
     setSelectedBlockIds([blockId]);

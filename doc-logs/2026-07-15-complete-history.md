@@ -8,3 +8,7 @@
 ## Safe error handling
 - Added route/global error pages, centralized safe error mapping, and version-aligned health response.
 - Error UI intentionally hides stack traces, document contents, internal paths, and backend/frontend implementation details.
+
+## PDF failure hardening
+- Removed accidental validation-report dependency from the download button.
+- Added safe actionable failure copy and PDF parser smoke assertion.
