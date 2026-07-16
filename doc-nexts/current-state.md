@@ -8,7 +8,7 @@
 
 ## Implemented
 - Responsive Indonesian landing page and workspace UI.
-- Two-route workspace: input page (`/workspace`) for upload/paste, canonical editor (`/workspace/editor`) with two-panel layout.
+- Two-route workspace: input page (`/workspace`) with two-column layout (info panel + form), canonical editor (`/workspace/editor`) with two-panel layout.
 - Upload and paste ingestion for `.md`, `.markdown`, and `.txt`.
 - Conservative heading/list/table/quote parsing with provenance and confidence.
 - Structure panel (left sidebar): block navigation with type badges, drag-and-drop reorder, multi-select, inline editing, bulk delete.
