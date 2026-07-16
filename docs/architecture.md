@@ -3,10 +3,15 @@
 ## Runtime Boundaries
 1. Browser UI in `app/` owns user interaction, temporary session recovery, and download initiation.
 2. Domain modules in `lib/` are framework-independent TypeScript and own parsing, citations, validation, templates, export, and session contracts.
-3. The current release has no server-side document persistence or API ingestion boundary beyond the health route.
+3. Components in `components/workspace/` are presentational; state lives in page-level orchestrators.
+4. The current release has no server-side document persistence or API ingestion boundary beyond the health route.
+
+## Routes
+- `/workspace` — Input page: file upload and paste ingestion, redirects to editor after parse.
+- `/workspace/editor` — Canonical editor: two-panel layout (StructurePanel + DocumentPreview), export, quality check.
 
 ## Data Flow
-`upload/paste -> ingestion -> SkripsiDocument -> validation/citation analysis -> template mapping -> PDF document -> browser download`
+`upload/paste -> ingestion -> SkripsiDocument -> session snapshot -> /workspace/editor -> validation/citation analysis -> template mapping -> PDF/DOCX export -> browser download`
 
 ## Domain Modules
 - `lib/ingestion.ts`: normalizes source text, detects structural blocks, and assigns provenance/confidence.
@@ -14,7 +19,18 @@
 - `lib/validation.ts`: creates quality score and export eligibility report.
 - `lib/template.ts`: maps block types to semantic template roles.
 - `lib/export-pdf.ts`: generates a paginated PDF and sanitizes output filenames.
+- `lib/export-docx.ts`: generates a valid OOXML DOCX package with proper relationships, styles, table grid, and page setup.
 - `lib/session.ts`: validates versioned local snapshots, applies expiry/quota checks, and bounds undo/redo history.
+
+## Components
+- `components/workspace/StructurePanel.tsx`: left sidebar with block navigation, drag-and-drop, multi-select, inline editing.
+- `components/workspace/DocumentPreview.tsx`: right panel with WYSIWYG-like document rendering using template styles.
+- `components/workspace/CampusLogo.tsx`: placeholder university logo SVG for document preview header.
+- `components/workspace/FormatPicker.tsx`: PDF/DOCX download dropdown selector.
+- `components/workspace/QualityCheck.tsx`: quality score display.
+- `components/workspace/AnalysisModal.tsx`: analysis result dialog.
+- `components/workspace/ConfirmDialog.tsx`: reusable confirmation dialog.
+- `components/workspace/ReferencePreview.tsx`: citation/reference formatted output.
 
 ## Invariants
 - Parser does not silently invent academic or reference metadata.
@@ -30,14 +46,11 @@ A server/API layer may be introduced for larger documents and DOC conversion. It
 
 ## Export policy
 - Quality score is advisory and never acts as an export permission gate.
-- exportDocx enforces only the minimum document object needed to generate a file; the UI may export documents with warnings or a score of 0/100.
-
-## Export strategy change
-- PDF is now the primary browser export because it avoids Word repair compatibility issues.
-- DOCX implementation remains isolated as legacy code until a valid Word package is fully validated.
+- Both PDF and DOCX export are available via the format picker.
+- DOCX export produces valid OOXML that opens correctly in Microsoft Word.
 
 ## Error boundaries
-- pp/error.tsx handles route-level rendering failures.
-- pp/global-error.tsx handles root-level rendering failures.
-- lib/safe-error.ts centralizes user-safe error copy and recovery guidance.
+- `app/error.tsx` handles route-level rendering failures.
+- `app/global-error.tsx` handles root-level rendering failures.
+- `lib/safe-error.ts` centralizes user-safe error copy and recovery guidance.
 - Internal errors remain available to platform diagnostics but are never rendered by the UI.

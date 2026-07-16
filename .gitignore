@@ -1,6 +1,7 @@
-﻿node_modules/
+node_modules/
 .next/
 out/
+out.txt
 dist/
 coverage/
 .env
@@ -13,3 +14,6 @@ tmp/
 .DS_Store
 Thumbs.db
 SkripsiFlows/
+doc-nexts/*.png
+doc-nexts/*.js
+doc-nexts/guidelines.txt

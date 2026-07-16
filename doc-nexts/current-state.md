@@ -3,33 +3,44 @@
 ## Product
 - Name: SkripsiFlow.
 - Purpose: convert Markdown, TXT, and paste into Indonesian thesis documents.
-- Primary route: `/workspace`.
+- Primary routes: `/workspace` (input) and `/workspace/editor` (canonical editor).
 - Git: `master` tracks `origin/master` at the latest pushed commit.
 
 ## Implemented
 - Responsive Indonesian landing page and workspace UI.
+- Two-route workspace: input page (`/workspace`) for upload/paste, canonical editor (`/workspace/editor`) with two-panel layout.
 - Upload and paste ingestion for `.md`, `.markdown`, and `.txt`.
 - Conservative heading/list/table/quote parsing with provenance and confidence.
-- Structural block editing and drag-and-drop ordering.
+- Structure panel (left sidebar): block navigation with type badges, drag-and-drop reorder, multi-select, inline editing, bulk delete.
+- Document preview (right panel): WYSIWYG-like rendering with A4 page proportions, template-based font/size/alignment, campus logo placeholder.
+- Bidirectional sync: click in structure panel highlights in preview and vice versa.
 - Citation/reference parsing and validation.
 - APA 7, IEEE, Vancouver, Harvard, and Chicago formatting adapters.
 - Semantic Indonesia-standard template registry.
-- PDF export with sanitized filename; quality warnings remain informational. DOCX is retained as legacy code pending Word package validation.\n- Markdown heading hierarchy and inline bold/italic/underline formatting are preserved in DOCX runs.
-- PDF export WinAnsi-sanitizes all drawn text so non-Latin punctuation and AI symbols (arrows, emoji, CJK, box-drawing) no longer abort export.
+- PDF export with sanitized filename; quality warnings remain informational.
+- DOCX export with valid OOXML structure — opens correctly in Microsoft Word.
+- Markdown heading hierarchy and inline bold/italic/underline formatting are preserved in DOCX runs.
+- PDF export WinAnsi-sanitizes all drawn text so non-Latin punctuation and AI symbols no longer abort export.
+- Format picker: download as PDF or DOCX with dropdown selector.
+- Campus logo placeholder in document preview header.
 - Quality score and manual review modal.
 - Local autosave/recovery with 60-minute expiry, 4 MB cap, and bounded undo/redo.
-- Documentation contract under `docs/`, `doc-logs/`, and `doc-nexts/`.\n- Public README documents product purpose, installation, usage, security, architecture, and current limitations.\n- Frontend visual refresh uses a contrast-first navy/mint/amber palette with SVG branding and responsive accessibility states.\n- Landing page includes an accessible visual usage guide and visible `v0.1.0` version tag.\n- Workspace analysis opens a review modal; unresolved blocks remain highlighted and can be edited or deleted.\n- Users can change block types between Bab, Subbab, Sub-subbab, paragraph, quote, list, table, and reference.\n- Analysis modal uses the restored warm cream/green theme with structured issue rows and accessible close/action controls.
+- Documentation contract under `docs/`, `doc-logs/`, and `doc-nexts/`.
+- Public README documents product purpose, installation, usage, security, architecture, and current limitations.
+- Frontend visual refresh uses a contrast-first navy/mint/amber palette with SVG branding and responsive accessibility states.
+- Landing page includes an accessible visual usage guide and visible version tag.
+- Analysis modal uses the restored warm cream/green theme with structured issue rows and accessible close/action controls.
+- Extracted components: StructurePanel, DocumentPreview, CampusLogo, FormatPicker, QualityCheck, AnalysisModal, ConfirmDialog, ReferencePreview.
 
 ## Not Implemented
 - Server-side persistence or accounts.
 - Legacy binary `.doc` export.
-- Full campus-specific template mapper.
+- Full campus-specific template mapper (logo is placeholder).
 - Rich Markdown AST parsing for nested structures and images.
 - Automated external metadata lookup for DOI/ISBN.
 
 ## Validation Baseline
-- `npm test`: 12 tests passing.
-- `npm test`: 15 tests passing (includes PDF Unicode sanitizer regression tests).
+- `npm test`: 16 tests passing.
 - `npm run build`: passing.
 - Static security scan: no unsafe HTML sink, dynamic execution, shell execution, or committed secret pattern found.
 - `git diff --check`: must pass before future push.
