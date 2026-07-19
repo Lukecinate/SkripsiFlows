@@ -1,0 +1,542 @@
+{
+  "version": "9.3.2",
+  "generatedAt": "2026-07-18T14:07:51.541Z",
+  "rootPath": "C:\\Users\\Prince-Z\\Documents\\Web Project\\markdown-to-word",
+  "recon": {
+    "frameworks": [],
+    "languages": [
+      "typescript"
+    ],
+    "apiRoutes": [
+      "app/api/health/route.ts",
+      "app/api/health/route.ts"
+    ],
+    "authPatterns": [],
+    "databases": [],
+    "cloudProviders": [],
+    "frontendExposure": [],
+    "packageManagers": [
+      "npm"
+    ],
+    "cicd": [],
+    "hasDockerfile": false,
+    "hasTerraform": false,
+    "hasKubernetes": false,
+    "envFiles": [],
+    "configFiles": []
+  },
+  "fileIndex": {
+    ".gitignore": {
+      "hash": "cc2de773c1f948d5dcac7a6985068d9b9f15e0d9702570a8b1a7a74a1300e5d0",
+      "size": 193,
+      "lastScanned": "2026-07-18T14:07:51.535Z"
+    },
+    "next-env.d.ts": {
+      "hash": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+      "size": 247,
+      "lastScanned": "2026-07-18T14:07:51.536Z"
+    },
+    "package.json": {
+      "hash": "8016abb52ebf2763d31b4e6fa6af643e557b2853bb5a4e08dcd87fac8ff231c0",
+      "size": 745,
+      "lastScanned": "2026-07-18T14:07:51.536Z"
+    },
+    "pnpm-workspace.yaml": {
+      "hash": "693cf7cefcb2fae7867632d77a78dc3d245b303e0009e37e8935ab838317e649",
+      "size": 43,
+      "lastScanned": "2026-07-18T14:07:51.536Z"
+    },
+    "README.md": {
+      "hash": "a32f49ff55968ad09d61b3633a94bb0018d9d757d599d6b53ac08ab1aee58be8",
+      "size": 7180,
+      "lastScanned": "2026-07-18T14:07:51.536Z"
+    },
+    "tsconfig.json": {
+      "hash": "a3f9dff2027e4086a72d60cd8dfb1e834ba8cb2939bca19275ec914dfa5380c4",
+      "size": 641,
+      "lastScanned": "2026-07-18T14:07:51.536Z"
+    },
+    "app/error.tsx": {
+      "hash": "8ca7c9d7b31333206bbbc37b62b62a76f8be75c2442b1a8ea001a23fd93b8d77",
+      "size": 641,
+      "lastScanned": "2026-07-18T14:07:51.536Z"
+    },
+    "app/global-error.tsx": {
+      "hash": "f2383674f8d082db8c04946dd9643e9cec93f8b5c36d4a00fe3dc02eb2e3d360",
+      "size": 622,
+      "lastScanned": "2026-07-18T14:07:51.536Z"
+    },
+    "app/globals.css": {
+      "hash": "0f4e4b05f1d6762aa7ee6ca6ee5216c596f51dc483bb946f7fb4875249c099fd",
+      "size": 37313,
+      "lastScanned": "2026-07-18T14:07:51.536Z"
+    },
+    "app/layout.tsx": {
+      "hash": "faa9a5fec78c791c0eee94e452eaf7900720ce1118f4c2bcac9ab3a39fdd8849",
+      "size": 409,
+      "lastScanned": "2026-07-18T14:07:51.536Z"
+    },
+    "app/page.tsx": {
+      "hash": "393b9a149cf403dc4cf2972352f009ef319e13cbd772c77617f18e43ab5d2c3d",
+      "size": 4355,
+      "lastScanned": "2026-07-18T14:07:51.536Z"
+    },
+    "doc-logs/2026-07-15-complete-history.md": {
+      "hash": "526e6b982a9114326d43825428c62520f732f855d9b78fd2333c25516f41b714",
+      "size": 740,
+      "lastScanned": "2026-07-18T14:07:51.536Z"
+    },
+    "doc-logs/2026-07-15-initial-scaffold.md": {
+      "hash": "3b3712c26d484719445f09af7e75f31cc8123b7b5cfe2bffdf293171b3e88b58",
+      "size": 1776,
+      "lastScanned": "2026-07-18T14:07:51.537Z"
+    },
+    "doc-logs/2026-07-16-input-page-polish.md": {
+      "hash": "a0670059551f7321d39eb64f7c282834ec175fc796b2059beb2e6648d9c40843",
+      "size": 1523,
+      "lastScanned": "2026-07-18T14:07:51.537Z"
+    },
+    "doc-logs/2026-07-16-pdf-unicode-fix.md": {
+      "hash": "bce05f850e66fab5f9fe753f318ff52852de5dabe1f686e649b9a3162a9b36c0",
+      "size": 1184,
+      "lastScanned": "2026-07-18T14:07:51.537Z"
+    },
+    "doc-logs/2026-07-16-workspace-refactor.md": {
+      "hash": "0d73524a318b66aead40fec811c00962c054631fbdad8cbab95a53f1073e27cd",
+      "size": 2990,
+      "lastScanned": "2026-07-18T14:07:51.537Z"
+    },
+    "doc-logs/2026-07-18-editor-google-docs-and-binuss-template.md": {
+      "hash": "67c1023e924259ebc4ff6ea82a0492481935b61f7d68acec805f5bc1cb0b2664",
+      "size": 4643,
+      "lastScanned": "2026-07-18T14:07:51.537Z"
+    },
+    "doc-logs/2026-07-18-upload-progress-feedback.md": {
+      "hash": "a3cf0e79cd8fb886799575ae49edf2e28852e15ae9b5eb3f9bcc6c78727274a2",
+      "size": 1196,
+      "lastScanned": "2026-07-18T14:07:51.537Z"
+    },
+    "docs/architecture.md": {
+      "hash": "cce17b52f5e0e9698cf56e588453e80450b3d92d56fd6a175ecb83e28cd27613",
+      "size": 3599,
+      "lastScanned": "2026-07-18T14:07:51.537Z"
+    },
+    "docs/citation-system.md": {
+      "hash": "2c9844271be54d190c18dd4ef836f1e3c80a7597dc131d310cddeaed343c9456",
+      "size": 537,
+      "lastScanned": "2026-07-18T14:07:51.537Z"
+    },
+    "docs/document-model.md": {
+      "hash": "ae25483897364713cf4fae9d95890094182088be535f1969efbb19a922542254",
+      "size": 1166,
+      "lastScanned": "2026-07-18T14:07:51.537Z"
+    },
+    "docs/product-overview.md": {
+      "hash": "b8adf4f0cdc8d941c14069405c36fa7ee1bab4893c960bcf21774603d11a7590",
+      "size": 705,
+      "lastScanned": "2026-07-18T14:07:51.537Z"
+    },
+    "docs/security-privacy.md": {
+      "hash": "6edea45e09b544c83e3cadfdfa98693b53ae56ce4c826096828ff88e83ece111",
+      "size": 2715,
+      "lastScanned": "2026-07-18T14:07:51.537Z"
+    },
+    "docs/template-system.md": {
+      "hash": "0b14785d5b7cdfe01aad4f50ecc7c9b5930c1a8665f6dfa0faca9bbd3317d632",
+      "size": 633,
+      "lastScanned": "2026-07-18T14:07:51.537Z"
+    },
+    "docs/testing-quality.md": {
+      "hash": "f3c311f2ab0a8210309581d796085408699169a71e9bbce01cfcabd67451b64f",
+      "size": 1856,
+      "lastScanned": "2026-07-18T14:07:51.538Z"
+    },
+    "docs/ux-flows.md": {
+      "hash": "82a12e9e81e77aa77dcfe19474ee13c370ac1547c7c24b4d2cc36270551897a4",
+      "size": 13243,
+      "lastScanned": "2026-07-18T14:07:51.538Z"
+    },
+    "lib/citation.test.ts": {
+      "hash": "f0f5474b88658379c4e7311d190619b2703aa122d96dbe98cf927decb73005a6",
+      "size": 1419,
+      "lastScanned": "2026-07-18T14:07:51.538Z"
+    },
+    "lib/citation.ts": {
+      "hash": "99805c5870a04f5c21d0c8d26e687be4ff311a8bccb0437991ab3f4731ab0f67",
+      "size": 6131,
+      "lastScanned": "2026-07-18T14:07:51.538Z"
+    },
+    "lib/export-docx.test.ts": {
+      "hash": "e879e78b285dc5330984090412ec68b4013ac98b0c8ea9ddb0b68ef08f4ae779",
+      "size": 4568,
+      "lastScanned": "2026-07-18T14:07:51.538Z"
+    },
+    "lib/export-docx.ts": {
+      "hash": "54d46c742404f680b55a0465b2660f67efbadb8dbe9a49cd82f70483a9ddd945",
+      "size": 26975,
+      "lastScanned": "2026-07-18T14:07:51.538Z"
+    },
+    "lib/export-pdf.test.ts": {
+      "hash": "319162104723de34254c430aa00e1756bcee45a6d1487ded189d6b3b15d09da4",
+      "size": 3163,
+      "lastScanned": "2026-07-18T14:07:51.538Z"
+    },
+    "lib/export-pdf.ts": {
+      "hash": "ad458a57fd82c28fa5851e44a7db8cdc4333ce3d3f1be1bdedc4b1b818f4069b",
+      "size": 20380,
+      "lastScanned": "2026-07-18T14:07:51.538Z"
+    },
+    "lib/ingestion.test.ts": {
+      "hash": "12e37063e07375349f92c4efc9ff6120d1718ec2ed05deed6cb0aea744a501c8",
+      "size": 2249,
+      "lastScanned": "2026-07-18T14:07:51.538Z"
+    },
+    "lib/ingestion.ts": {
+      "hash": "df43368b0c109cd554834535ff75d47b511d9e6e631f40d5c76428ff29abdf56",
+      "size": 12107,
+      "lastScanned": "2026-07-18T14:07:51.538Z"
+    },
+    "lib/outline.test.ts": {
+      "hash": "b72fbbbe58e51d754cc71764d9780f0de3108a42f51e1fd3ec1af35bc396fe96",
+      "size": 2659,
+      "lastScanned": "2026-07-18T14:07:51.538Z"
+    },
+    "lib/outline.ts": {
+      "hash": "34abb27687bab24cc917dbfb4b3ef3b0b9a1b427e955c9f4e3fab8328a1321a5",
+      "size": 3189,
+      "lastScanned": "2026-07-18T14:07:51.538Z"
+    },
+    "lib/pdf-block-renderers.ts": {
+      "hash": "cd0c3e5ca7b359ea5a08c5db22f5e7cb56c90258b1c77db335ec44fbea7b30f5",
+      "size": 13063,
+      "lastScanned": "2026-07-18T14:07:51.538Z"
+    },
+    "lib/pdf-helpers.ts": {
+      "hash": "ca30d3e61b84e7c7fe7edcb85f8ef0f5669d0b284702a059689190cdc2080129",
+      "size": 14855,
+      "lastScanned": "2026-07-18T14:07:51.539Z"
+    },
+    "lib/renumber.test.ts": {
+      "hash": "684031124eb8c79cc27bdd99dc442156559454d2dc2a961e7b30d8cd12761591",
+      "size": 2436,
+      "lastScanned": "2026-07-18T14:07:51.539Z"
+    },
+    "lib/renumber.ts": {
+      "hash": "4ed6cc6165591296247fd4c97d5174c39ac9c3de17f0d01b35904601f04af7e7",
+      "size": 1783,
+      "lastScanned": "2026-07-18T14:07:51.539Z"
+    },
+    "lib/safe-error.ts": {
+      "hash": "f394dbbccf9ee60f235a192066176aeb8b3b2fd04d4dcd6bf43c97defe76061f",
+      "size": 1121,
+      "lastScanned": "2026-07-18T14:07:51.539Z"
+    },
+    "lib/session.test.ts": {
+      "hash": "4428dff8364ac4f24cc1c0eb584e099b427761476d9580e1ae8b6da46670d9a3",
+      "size": 1203,
+      "lastScanned": "2026-07-18T14:07:51.539Z"
+    },
+    "lib/session.ts": {
+      "hash": "2434468c2236efe86dff6c39a0bd6275d62b80b5d18e09205d24982e316d4bc8",
+      "size": 2746,
+      "lastScanned": "2026-07-18T14:07:51.539Z"
+    },
+    "lib/template.ts": {
+      "hash": "7b732a1717f1b510d0ed6439e2e180dd219388db478d196767b7567b1635fe57",
+      "size": 5630,
+      "lastScanned": "2026-07-18T14:07:51.539Z"
+    },
+    "lib/toc.test.ts": {
+      "hash": "f507f65d955e13ebb9deae25dc4287a43427b07c253755707ffb0fb0b9e431a0",
+      "size": 2849,
+      "lastScanned": "2026-07-18T14:07:51.539Z"
+    },
+    "lib/toc.ts": {
+      "hash": "fd8a9a893dc4204371c6753e4915358fcea1a6dc628527e563fa021a6ccbca91",
+      "size": 2336,
+      "lastScanned": "2026-07-18T14:07:51.539Z"
+    },
+    "lib/validation.test.ts": {
+      "hash": "13a32d60a928b622e14fa5567ef9922bf790551b1c82ccab448fa32659d88486",
+      "size": 1283,
+      "lastScanned": "2026-07-18T14:07:51.539Z"
+    },
+    "lib/validation.ts": {
+      "hash": "bf167befbba73bf1f9b89e2289a7e83175d6093a9589ffbc4362e9c3e3cb5a05",
+      "size": 1627,
+      "lastScanned": "2026-07-18T14:07:51.539Z"
+    },
+    "doc-nexts/agent-context.md": {
+      "hash": "88c4fecd87aa3421e87431ae5fa097c7d3458b3b6b5bb3178e145614815c394e",
+      "size": 1081,
+      "lastScanned": "2026-07-18T14:07:51.539Z"
+    },
+    "doc-nexts/current-state.md": {
+      "hash": "9f89c82708ba9d99dd221c754e514e82e68bd4760de285499723263c7ff8faba",
+      "size": 2427,
+      "lastScanned": "2026-07-18T14:07:51.539Z"
+    },
+    "doc-nexts/decision-records.md": {
+      "hash": "c9dff09327605292ff36c87afca1e6204aef8e0bcdeae4dd51c1107330b8e48d",
+      "size": 1297,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    "doc-nexts/next-task.md": {
+      "hash": "9fc3145abbe01f355f44f2adf4344c51912fa1dbd0f5e6fc6b52bcff5107adea",
+      "size": 1543,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    "tools/smoke-export.ts": {
+      "hash": "5bc9dcdf09fb12d252c05244a1caa857207d90e4f4f3de2d4eb68a01b03db9a6",
+      "size": 4490,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    ".commandcode/taste/taste.md": {
+      "hash": "6f64f1845ab9d093fa7171ff70d9756218c8f750e3e003404472e15cb69c52f7",
+      "size": 747,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    ".commandcode/plans/workspace-refactor.md": {
+      "hash": "08a795c2e6fc773e17b2385012785e1022684618cac5df06083575e6f66546d0",
+      "size": 6923,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    "components/workspace/AnalysisModal.tsx": {
+      "hash": "9d81a2604b4b9a911533c81e6d63254237bb3b5f269d0fce4d8e53ead490b3be",
+      "size": 1492,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    "components/workspace/CampusLogo.tsx": {
+      "hash": "6bff38f9fc3e1b85a0112811c62bfc842d21b93f2fdff405796d559fe6f874ee",
+      "size": 767,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    "components/workspace/ConfirmDialog.tsx": {
+      "hash": "572f355a09c739e91380c557fef632199c5cffa4e1c256aaeb151611412458e5",
+      "size": 927,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    "components/workspace/DocumentPreview.tsx": {
+      "hash": "e77ead68a73811baab5b3c5f7c9f1651097233200e991dcb878006c27f361a71",
+      "size": 11763,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    "components/workspace/FormatPicker.tsx": {
+      "hash": "84638594ae72344fc5db92d6eabf7ff601cc7201e2699201e3c7a0ee65c3160f",
+      "size": 1388,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    "components/workspace/QualityCheck.tsx": {
+      "hash": "47e599b328a5c2e4ace05a0758e4b20f4b20042cd95a341e93cd236cfe94c722",
+      "size": 753,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    "components/workspace/ReferencePreview.tsx": {
+      "hash": "aac85804e16d7510b58ac142dbfc0acf783fe259e5269830800cdd1dfdba29ee",
+      "size": 780,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    "components/workspace/StructurePanel.tsx": {
+      "hash": "e33da0d52906bb9134d6ed2a4a3403f79791fdaf1f0cdcf6dd46c3cedeb42d3e",
+      "size": 4951,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    "components/workspace/TocPanel.tsx": {
+      "hash": "3a0b91329ba697cb4b8e622c3295eaebf5e76070a4b8f24aca9c07c1925fdfaa",
+      "size": 4506,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    "app/workspace/page.tsx": {
+      "hash": "5299c680c44a42181522162c0ca833b99badc06df3d31be2f0e3c58c4a50a57f",
+      "size": 9943,
+      "lastScanned": "2026-07-18T14:07:51.540Z"
+    },
+    "lib/document-model/index.ts": {
+      "hash": "6cba80b16921375ea9fc7d17e2f16a52c553dd50897ffbe1e39182294eee216a",
+      "size": 1416,
+      "lastScanned": "2026-07-18T14:07:51.541Z"
+    },
+    "app/api/health/route.ts": {
+      "hash": "17c25027dc9512635134cb5e0fd4eeb0da83c6432a090eb2ef3f14037a1f7d52",
+      "size": 167,
+      "lastScanned": "2026-07-18T14:07:51.541Z"
+    },
+    "app/workspace/editor/page.tsx": {
+      "hash": "970b2f20037e805f8b85853ea3a2e3f038efc5f8d672e107954d72e9c25cc20a",
+      "size": 14569,
+      "lastScanned": "2026-07-18T14:07:51.541Z"
+    }
+  },
+  "lastFindings": {
+    "package.json": [
+      {
+        "line": 0,
+        "column": 0,
+        "severity": "high",
+        "category": "supply-chain",
+        "rule": "TYPOSQUAT_SUSPECT",
+        "title": "Possible Typosquat: \"next\" (similar to \"nuxt\")",
+        "description": "Package \"next\" is 1 character(s) away from popular package \"nuxt\". This could be a typosquatting attempt.",
+        "matched": "next",
+        "confidence": "medium",
+        "cwe": null,
+        "owasp": null,
+        "fix": "Verify this is the intended package. Did you mean \"nuxt\"?"
+      },
+      {
+        "line": 0,
+        "column": 0,
+        "severity": "low",
+        "category": "supply-chain",
+        "rule": "UNUSED_DEPENDENCY",
+        "title": "Unused Dependency: react-dom",
+        "description": "\"react-dom\" is in dependencies but never imported in project code. Unused dependencies increase attack surface.",
+        "matched": "react-dom",
+        "confidence": "low",
+        "cwe": null,
+        "owasp": null,
+        "fix": "Remove if unused: npm uninstall react-dom"
+      },
+      {
+        "line": 0,
+        "column": 0,
+        "severity": "high",
+        "category": "supply-chain",
+        "rule": "TYPOSQUAT_SUSPECT",
+        "title": "Possible Typosquat: \"next\" (similar to \"nuxt\")",
+        "description": "Package \"next\" is 1 character(s) away from popular package \"nuxt\". This could be a typosquatting attempt.",
+        "matched": "next",
+        "confidence": "medium",
+        "cwe": null,
+        "owasp": null,
+        "fix": "Verify this is the intended package. Did you mean \"nuxt\"?"
+      },
+      {
+        "line": 0,
+        "column": 0,
+        "severity": "low",
+        "category": "supply-chain",
+        "rule": "UNUSED_DEPENDENCY",
+        "title": "Unused Dependency: react-dom",
+        "description": "\"react-dom\" is in dependencies but never imported in project code. Unused dependencies increase attack surface.",
+        "matched": "react-dom",
+        "confidence": "low",
+        "cwe": null,
+        "owasp": null,
+        "fix": "Remove if unused: npm uninstall react-dom"
+      }
+    ],
+    "lib/export-docx.ts": [
+      {
+        "line": 390,
+        "column": 39,
+        "severity": "high",
+        "category": "api",
+        "rule": "API_UPLOAD_NO_TYPE_CHECK",
+        "title": "API: File Upload Without Type Validation",
+        "description": "File upload using original filename without type validation.",
+        "matched": "filename)",
+        "confidence": "low",
+        "cwe": "CWE-434",
+        "owasp": "A04:2021",
+        "fix": "Validate file extension and MIME type. Generate random filenames for storage."
+      }
+    ],
+    "lib/export-pdf.ts": [
+      {
+        "line": 630,
+        "column": 28,
+        "severity": "high",
+        "category": "api",
+        "rule": "API_UPLOAD_NO_TYPE_CHECK",
+        "title": "API: File Upload Without Type Validation",
+        "description": "File upload using original filename without type validation.",
+        "matched": "filename)",
+        "confidence": "low",
+        "cwe": "CWE-434",
+        "owasp": "A04:2021",
+        "fix": "Validate file extension and MIME type. Generate random filenames for storage."
+      }
+    ],
+    "app/workspace/editor/page.tsx": [
+      {
+        "line": 194,
+        "column": 34,
+        "severity": "high",
+        "category": "api",
+        "rule": "API_UPLOAD_NO_TYPE_CHECK",
+        "title": "API: File Upload Without Type Validation",
+        "description": "File upload using original filename without type validation.",
+        "matched": "filename)",
+        "confidence": "low",
+        "cwe": "CWE-434",
+        "owasp": "A04:2021",
+        "fix": "Validate file extension and MIME type. Generate random filenames for storage."
+      },
+      {
+        "line": 198,
+        "column": 41,
+        "severity": "high",
+        "category": "api",
+        "rule": "API_UPLOAD_NO_TYPE_CHECK",
+        "title": "API: File Upload Without Type Validation",
+        "description": "File upload using original filename without type validation.",
+        "matched": "filename;",
+        "confidence": "low",
+        "cwe": "CWE-434",
+        "owasp": "A04:2021",
+        "fix": "Validate file extension and MIME type. Generate random filenames for storage."
+      },
+      {
+        "line": 210,
+        "column": 35,
+        "severity": "high",
+        "category": "api",
+        "rule": "API_UPLOAD_NO_TYPE_CHECK",
+        "title": "API: File Upload Without Type Validation",
+        "description": "File upload using original filename without type validation.",
+        "matched": "filename)",
+        "confidence": "low",
+        "cwe": "CWE-434",
+        "owasp": "A04:2021",
+        "fix": "Validate file extension and MIME type. Generate random filenames for storage."
+      },
+      {
+        "line": 214,
+        "column": 41,
+        "severity": "high",
+        "category": "api",
+        "rule": "API_UPLOAD_NO_TYPE_CHECK",
+        "title": "API: File Upload Without Type Validation",
+        "description": "File upload using original filename without type validation.",
+        "matched": "filename;",
+        "confidence": "low",
+        "cwe": "CWE-434",
+        "owasp": "A04:2021",
+        "fix": "Validate file extension and MIME type. Generate random filenames for storage."
+      }
+    ],
+    "lib/citation.ts": [
+      {
+        "line": 17,
+        "column": 700,
+        "severity": "medium",
+        "category": "llm",
+        "rule": "RAG_METADATA_IN_RESPONSE",
+        "title": "RAG: Internal Metadata Exposed in Response",
+        "description": "Internal document metadata (file paths, sources, authors) returned in API responses. Leaks information about the knowledge base structure.",
+        "matched": "author\" : undefined].filter(Boolean).length / 4; return {",
+        "confidence": "low",
+        "cwe": "CWE-200",
+        "owasp": "A01:2021",
+        "fix": "Strip internal metadata before returning responses. Only expose necessary fields to the client."
+      }
+    ]
+  },
+  "stats": {
+    "totalFiles": 68,
+    "totalFindings": 11,
+    "lastScore": 79.3,
+    "lastGrade": "B"
+  }
+}

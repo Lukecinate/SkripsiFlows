@@ -32,8 +32,9 @@ export default function HomePage() {
 
       <section className="quote-band"><div className="shell quote-content"><span className="quote-mark">“</span><p>Dokumen yang rapi bukan berarti harus dibuat dengan cara yang rumit.</p><span className="quote-caption">SkripsiFlow · built for the final stretch</span></div></section>
 
-      <footer className="footer shell"><div className="brand"><span className="brand-mark small" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M8 5h11a6 6 0 0 1 0 12H13v10H8V5Zm5 5v3h6a1.5 1.5 0 0 0 0-3h-6Z"/><path className="mark-cut" d="M13 20h9v5h-9z"/></svg></span><span>Skripsi<span className="brand-accent">Flow</span></span></div><span>Workspace skripsi yang mengerti prosesmu.</span><span className="version-tag">v0.2.0 · Prototype</span></footer>
+      <footer className="footer shell"><div className="brand"><span className="brand-mark small" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M8 5h11a6 6 0 0 1 0 12H13v10H8V5Zm5 5v3h6a1.5 1.5 0 0 0 0-3h-6Z"/><path className="mark-cut" d="M13 20h9v5h-9z"/></svg></span><span>Skripsi<span className="brand-accent">Flow</span></span></div><span>Workspace skripsi yang mengerti prosesmu.</span><span className="version-tag">v1.0.0-beta</span></footer>
     </main>
   );
 }
+
 

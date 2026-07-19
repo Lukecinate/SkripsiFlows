@@ -1,11 +1,8 @@
 "use client";
+import { useMemo, useState } from "react";
 import { type DocumentBlock } from "../../lib/document-model";
-
-const blockTypeLabels: Record<string, string> = {
-  chapter: "Bab Utama", section: "Subbab", subchapter: "Sub-subbab",
-  paragraph: "Paragraf", quote: "Kutipan", list: "Daftar",
-  table: "Tabel", reference: "Referensi",
-};
+import { buildOutline } from "../../lib/outline";
+import { buildToc } from "../../lib/toc";
 
 interface StructurePanelProps {
   blocks: DocumentBlock[];
@@ -14,8 +11,6 @@ interface StructurePanelProps {
   draggedId: string | null;
   dragOverId: string | null;
   onSelect: (id: string) => void;
-  onToggleSelect: (id: string) => void;
-  onToggleAll: () => void;
   onUpdateContent: (block: DocumentBlock, content: string) => void;
   onChangeType: (id: string, type: DocumentBlock["type"]) => void;
   onDelete: (id: string) => void;
@@ -24,93 +19,126 @@ interface StructurePanelProps {
   onDragOver: (id: string) => void;
   onDragLeave: (id: string) => void;
   onDrop: (id: string) => void;
-  onAddBlock: () => void;
+  onAddBlock: (type: DocumentBlock["type"]) => void;
+  selectedCount: number;
   onBulkDelete: () => void;
+}
+
+const blockTypeLabels: Record<string, string> = {
+  chapter: "Bab", section: "Subbab", subchapter: "Sub-subbab",
+  paragraph: "Paragraf", quote: "Kutipan", list: "Daftar",
+  table: "Tabel", image: "Gambar", reference: "Referensi",
+};
+
+type Tab = "heading" | "tables" | "figures";
+
+const FAKE_DOC_BASE = { schemaVersion: 1 as const, id: "x", title: "x", templateId: "x", citationStyle: "apa-7" as const, references: [] as never[], reviewRequired: false, createdAt: "", updatedAt: "" };
+
+function stripNum(s: string): string {
+  if (!s) return "";
+  // Remove leading numbering like "1.1 ", "1.1.1 ", "I ", "I.I "
+  return s.replace(/^[\d.\sivxlcdm]+/, "");
 }
 
 export default function StructurePanel({
   blocks, selectedIds, activeBlockId, draggedId, dragOverId,
-  onSelect, onToggleSelect, onToggleAll, onUpdateContent, onChangeType,
-  onDelete, onDragStart, onDragEnd, onDragOver, onDragLeave, onDrop,
-  onAddBlock, onBulkDelete,
+  onSelect, onUpdateContent, onChangeType, onDelete, onDragStart, onDragEnd, onDragOver, onDragLeave, onDrop,
+  onAddBlock, selectedCount, onBulkDelete,
 }: StructurePanelProps) {
-  const allSelected = blocks.length > 0 && selectedIds.length === blocks.length;
+  const outline = useMemo(() => buildOutline({ ...FAKE_DOC_BASE, blocks }), [blocks]);
+  const selectedIdsSet = useMemo(() => new Set(selectedIds), [selectedIds]);
+  const blockMap = useMemo(() => new Map(blocks.map((b) => [b.id, b])), [blocks]);
+  const [tab, setTab] = useState<Tab>("heading");
+  const fakeDoc = useMemo(() => ({ ...FAKE_DOC_BASE, blocks }), [blocks]);
+  const toc = useMemo(() => buildToc(fakeDoc), [fakeDoc]);
+
   return (
     <aside className="structure-panel">
       <div className="structure-panel-header">
-        <span className="eyebrow">STRUKTUR</span>
+        <span className="eyebrow">DAFTAR ISI</span>
         <div className="structure-panel-actions">
-          <button type="button" className="block-action" onClick={onAddBlock}>+</button>
-          {selectedIds.length > 0 && (
-            <button type="button" className="block-action danger" onClick={onBulkDelete}>
-              Hapus ({selectedIds.length})
-            </button>
-          )}
+          <button type="button" className="block-action" onClick={() => onAddBlock("paragraph")}>+ Paragraf</button>
+          <button type="button" className="block-action" onClick={() => onAddBlock("list")}>+ Daftar</button>
+          <button type="button" className="block-action" onClick={() => onAddBlock("quote")}>+ Kutipan</button>
         </div>
       </div>
-      <label className="select-all">
-        <input type="checkbox" checked={allSelected} onChange={onToggleAll} />
-        Pilih semua
-      </label>
-      <div className="structure-block-list">
-        {blocks.map((block) => (
-          <article
-            key={block.id}
-            className={`structure-block ${activeBlockId === block.id ? "is-active" : ""} ${selectedIds.includes(block.id) ? "is-selected" : ""} ${draggedId === block.id ? "is-dragging" : ""} ${dragOverId === block.id ? "is-drop-target" : ""} ${block.needsReview ? "needs-review" : ""}`}
-            draggable
-            onDragStart={(e) => { e.dataTransfer.effectAllowed = "move"; onDragStart(block.id); }}
-            onDragEnd={onDragEnd}
-            onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; onDragOver(block.id); }}
-            onDragLeave={() => onDragLeave(block.id)}
-            onDrop={() => onDrop(block.id)}
-          >
-            <div className="structure-block-row">
-              <label className="block-select" onClick={(e) => e.stopPropagation()}>
-                <input
-                  type="checkbox"
-                  checked={selectedIds.includes(block.id)}
-                  onChange={() => onToggleSelect(block.id)}
-                  aria-label={`Pilih ${blockTypeLabels[block.type] || block.type}`}
-                />
-              </label>
-              <span className="drag-handle" aria-label="Geser">
-                <svg viewBox="0 0 20 20"><circle cx="7" cy="6" r="1"/><circle cx="13" cy="6" r="1"/><circle cx="7" cy="10" r="1"/><circle cx="13" cy="10" r="1"/><circle cx="7" cy="14" r="1"/><circle cx="13" cy="14" r="1"/></svg>
-              </span>
-              <button type="button" className="structure-block-content" onClick={() => onSelect(block.id)}>
-                <span className={`type-badge type-badge-${block.type}`}>
-                  {blockTypeLabels[block.type] || block.type}
-                </span>
-                <span className="structure-block-snippet">
-                  {block.content.slice(0, 60)}{block.content.length > 60 ? "..." : ""}
-                </span>
-              </button>
-              <div className="structure-block-actions">
-                <select
-                  value={block.type}
-                  onChange={(e) => onChangeType(block.id, e.target.value as DocumentBlock["type"])}
-                  className="type-picker-select"
-                  aria-label={`Tipe blok ${block.id}`}
-                >
-                  {Object.entries(blockTypeLabels).map(([value, label]) => (
-                    <option key={value} value={value}>{label}</option>
-                  ))}
-                </select>
-                <button type="button" className="block-action danger" onClick={() => onDelete(block.id)}>
-                  Hapus
+      <div className="toc-tabs" role="tablist">
+        <button role="tab" aria-selected={tab === "heading"} className={tab === "heading" ? "is-active" : ""} onClick={() => setTab("heading")}>Daftar Isi</button>
+        <button role="tab" aria-selected={tab === "tables"} className={tab === "tables" ? "is-active" : ""} onClick={() => setTab("tables")}>Tabel</button>
+        <button role="tab" aria-selected={tab === "figures"} className={tab === "figures" ? "is-active" : ""} onClick={() => setTab("figures")}>Gambar</button>
+      </div>
+      <nav className="outline-nav" aria-label="Navigasi dokumen">
+        {tab === "heading" && (
+          <>
+            {outline.length === 0 && <p className="outline-empty">Belum ada bab terdeteksi.</p>}
+            {outline.map((entry) => {
+              const block = blockMap.get(entry.blockId);
+              if (!block) return null;
+              const title = stripNum(block.content.split(/\n/)[0]?.trim() ?? "");
+              return (
+                <button key={entry.blockId} type="button"
+                  className={`outline-entry outline-level-${entry.level} ${activeBlockId === entry.blockId ? "is-active" : ""} ${selectedIdsSet.has(entry.blockId) ? "is-selected" : ""} ${draggedId === entry.blockId ? "is-dragging" : ""} ${dragOverId === entry.blockId ? "is-drop-target" : ""}`}
+                  onClick={() => onSelect(entry.blockId)}
+                  draggable onDragStart={(e) => { e.dataTransfer.effectAllowed = "move"; onDragStart(entry.blockId); }}
+                  onDragEnd={onDragEnd} onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; onDragOver(entry.blockId); }}
+                  onDragLeave={() => onDragLeave(entry.blockId)} onDrop={() => onDrop(entry.blockId)}>
+                  <span className="outline-number">{entry.number}</span>
+                  <span className="outline-title">{title}</span>
                 </button>
+              );
+            })}
+          </>
+        )}
+        {tab === "tables" && (
+          <>
+            {toc.tables.length === 0 && <p className="outline-empty">Belum ada tabel.</p>}
+            {toc.tables.map((entry) => (
+              <button key={entry.blockId} type="button" className="outline-entry outline-level-1" onClick={() => onSelect(entry.blockId)}>
+                <span className="outline-number">{entry.number}</span>
+                <span className="outline-title">{entry.title}</span>
+              </button>
+            ))}
+          </>
+        )}
+        {tab === "figures" && (
+          <>
+            {toc.figures.length === 0 && <p className="outline-empty">Belum ada gambar.</p>}
+            {toc.figures.map((entry) => (
+              <button key={entry.blockId} type="button" className="outline-entry outline-level-1" onClick={() => onSelect(entry.blockId)}>
+                <span className="outline-number">{entry.number}</span>
+                <span className="outline-title">{entry.title}</span>
+              </button>
+            ))}
+          </>
+        )}
+      </nav>
+      {selectedCount > 0 && (
+        <div className="selection-toolbar">
+          <span>{selectedCount} blok tersorot</span>
+          <button type="button" className="block-action danger" onClick={onBulkDelete}>Hapus</button>
+        </div>
+      )}
+      <details className="block-quickedit">
+        <summary>Detail blok aktif</summary>
+        {activeBlockId && (() => {
+          const block = blockMap.get(activeBlockId);
+          if (!block) return null;
+          return (
+            <div className="block-quickedit-body">
+              <label className="block-quickedit-field">
+                <span>Tipe blok</span>
+                <select value={block.type} onChange={(e) => onChangeType(block.id, e.target.value as DocumentBlock["type"])}>
+                  {Object.entries(blockTypeLabels).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                </select>
+              </label>
+              <textarea value={block.content} onChange={(e) => onUpdateContent(block, e.target.value)} rows={4} aria-label="Edit isi blok" />
+              <div className="block-quickedit-actions">
+                <button type="button" className="block-action danger" onClick={() => onDelete(block.id)}>Hapus</button>
               </div>
             </div>
-            {activeBlockId === block.id && (
-              <textarea
-                className="structure-block-editor"
-                value={block.content}
-                onChange={(e) => onUpdateContent(block, e.target.value)}
-                aria-label={`Edit ${blockTypeLabels[block.type]}`}
-              />
-            )}
-          </article>
-        ))}
-      </div>
+          );
+        })()}
+      </details>
     </aside>
   );
 }

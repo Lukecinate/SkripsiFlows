@@ -1,4 +1,4 @@
-export type BlockType =
+﻿export type BlockType =
   | "metadata"
   | "chapter"
   | "section"
@@ -38,6 +38,21 @@ export interface ReferenceEntry {
   completeness: number;
 }
 
+export interface DocumentMetadata {
+  authors?: string[];
+  nim?: string[];
+  institution?: string;
+  program?: string;
+  studyProgram?: string;
+  faculty?: string;
+  campus?: string;
+  city?: string;
+  year?: number;
+  supervisor?: string[];
+  logoLabel?: string;
+  englishTitle?: string;
+}
+
 export interface SkripsiDocument {
   schemaVersion: 1;
   id: string;
@@ -49,4 +64,5 @@ export interface SkripsiDocument {
   reviewRequired: boolean;
   createdAt: string;
   updatedAt: string;
+  documentMetadata?: DocumentMetadata;
 }

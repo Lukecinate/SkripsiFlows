@@ -1,15 +1,244 @@
-﻿import { PDFDocument, PDFFont, PDFPage, StandardFonts, rgb } from "pdf-lib";
-import type { DocumentBlock, SkripsiDocument } from "./document-model";
-import type { InlineSegment } from "./ingestion";
+/**
+ * PDF Export - Konversi SkripsiDocument ke PDF
+ * 
+ * File ini mengorkestrasi proses export PDF:
+ * 1. Validasi dokumen
+ * 2. Setup PDF dan font
+ * 3. Render cover, front matter, dan body
+ * 4. Serialize ke ArrayBuffer
+ * 
+ * Block renderers ada di ./pdf-block-renderers.ts
+ * Helper functions ada di ./pdf-helpers.ts
+ * 
+ * @module export-pdf
+ */
 
-export interface PdfExportResult { filename: string; mimeType: "application/pdf"; data: ArrayBuffer; }
-const PAGE_WIDTH = 595.28; const PAGE_HEIGHT = 841.89; const MARGIN_X = 72; const MARGIN_TOP = 70; const MARGIN_BOTTOM = 65; const LINE_HEIGHT = 17;
-function safeFilename(filename: string): string { const normalized = filename.normalize("NFKC").replace(/[^\w .-]/g, "-").trim(); return `${(normalized || "skripsiflow-document").slice(0, 120).replace(/\.pdf$/i, "")}.pdf`; }
-const FALLBACK_SUBSTITUTIONS: Record<number, string> = { 0x0000: "", 0x200B: "", 0xFEFF: "", 0x00AD: "", 0x00A0: " ", 0x2007: " ", 0x2008: " ", 0x2009: " ", 0x202F: " ", 0x2010: "-", 0x2011: "-", 0x2012: "-", 0x2015: "-", 0x2013: "-", 0x2212: "-", 0x2018: "'", 0x2019: "'", 0x201A: "'", 0x201B: "'", 0x201C: "\"", 0x201D: "\"", 0x201E: "\"", 0x2033: "\"", 0x2026: "...", 0x2039: "<", 0x203A: ">", 0x02C6: "^", 0x02DC: "~", 0x2020: "+", 0x2021: "+", 0x00B7: ".", 0x2122: "(TM)", 0x00A9: "(c)", 0x00AE: "(R)", 0x2190: "<-", 0x2192: "->", 0x2194: "<->", 0x21D2: "=>", 0x21D0: "<=", 0x21D4: "<=>", 0x2022: "-", 0x25CF: "-", 0x221E: "infinity", 0x2260: "!=", 0x2264: "<=", 0x2265: ">=", 0x2191: "^", 0x2193: "v", 0x2500: "-", 0x2502: "|" };
-let supportedCodePoints: Set<number> | null = null;
-function sanitizeForPdf(text: string, fonts: Record<string, PDFFont>): string { if (!text) return ""; if (!supportedCodePoints) supportedCodePoints = new Set(fonts.normal.getCharacterSet()); let out = ""; for (const char of text) { const code = char.codePointAt(0) as number; if (supportedCodePoints.has(code)) { out += char; continue; } const sub = FALLBACK_SUBSTITUTIONS[code]; if (sub !== undefined) { out += sub; continue; } const normalized = char.normalize("NFKD"); if (normalized && normalized !== char) { let kept = ""; for (const decomposed of normalized) { const decCode = decomposed.codePointAt(0) as number; if (supportedCodePoints.has(decCode)) kept += decomposed; } out += kept || "?"; continue; } out += "?"; } return out; }
-function segmentsFor(block: DocumentBlock): InlineSegment[] { try { const parsed = block.metadata?.inline ? JSON.parse(block.metadata.inline) as InlineSegment[] : []; return parsed.length ? parsed : [{ text: block.content, marks: [] }]; } catch { return [{ text: block.content, marks: [] }]; } }
-function fontFor(fonts: Record<string, PDFFont>, marks: string[]): PDFFont { if (marks.includes("bold") && marks.includes("italic")) return fonts.boldItalic; if (marks.includes("bold")) return fonts.bold; if (marks.includes("italic")) return fonts.italic; return fonts.normal; }
-function drawWrapped(page: PDFPage, segments: InlineSegment[], fonts: Record<string, PDFFont>, x: number, y: number, maxWidth: number, size: number): number { let cursorX = x; let cursorY = y; for (const segment of segments) { const font = fontFor(fonts, segment.marks); const cleanText = sanitizeForPdf(segment.text, fonts); const words = cleanText.split(/(\s+)/); for (const word of words) { const width = font.widthOfTextAtSize(word, size); if (cursorX > x && cursorX + width > x + maxWidth) { cursorX = x; cursorY -= LINE_HEIGHT; } page.drawText(word, { x: cursorX, y: cursorY, size, font, color: rgb(0.09, 0.13, 0.11) }); if (segment.marks.includes("underline") && word.trim()) page.drawLine({ start: { x: cursorX, y: cursorY - 2 }, end: { x: cursorX + width, y: cursorY - 2 }, thickness: 0.7, color: rgb(0.09, 0.13, 0.11) }); cursorX += width; } } return cursorY; }
-function blockSize(block: DocumentBlock): { size: number; gap: number } { if (block.type === "chapter") return { size: 16, gap: 22 }; if (block.type === "section") return { size: 14, gap: 16 }; if (block.type === "subchapter") return { size: 13, gap: 13 }; if (block.type === "quote") return { size: 11, gap: 12 }; return { size: block.type === "reference" ? 11 : 12, gap: 12 }; }
-export async function exportPdf(document: SkripsiDocument, filename = "skripsiflow-document.pdf"): Promise<PdfExportResult> { if (!document.title.trim()) throw new Error("Dokumen belum memiliki judul."); const pdf = await PDFDocument.create(); const fonts = { normal: await pdf.embedFont(StandardFonts.TimesRoman), bold: await pdf.embedFont(StandardFonts.TimesRomanBold), italic: await pdf.embedFont(StandardFonts.TimesRomanItalic), boldItalic: await pdf.embedFont(StandardFonts.TimesRomanBoldItalic) }; supportedCodePoints = null; let page = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT]); let y = PAGE_HEIGHT - MARGIN_TOP; for (const block of document.blocks) { const { size, gap } = blockSize(block); const segments = segmentsFor(block); const estimated = segments.reduce((sum, segment) => sum + segment.text.length, 0) / 75 * LINE_HEIGHT; if (y - estimated < MARGIN_BOTTOM) { page = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT]); y = PAGE_HEIGHT - MARGIN_TOP; } if (block.type === "table") { const rows = block.content.split(/\n/).filter(Boolean); for (const row of rows) { page.drawRectangle({ x: MARGIN_X, y: y - 16, width: PAGE_WIDTH - MARGIN_X * 2, height: 20, borderColor: rgb(0.75, 0.8, 0.76), borderWidth: 0.6 }); y = drawWrapped(page, [{ text: sanitizeForPdf(row.replace(/\|/g, "  |  "), fonts), marks: [] }], fonts, MARGIN_X + 6, y - 13, PAGE_WIDTH - MARGIN_X * 2 - 12, 10) - 8; } } else { y = drawWrapped(page, segments, fonts, MARGIN_X, y, PAGE_WIDTH - MARGIN_X * 2, size) - gap; } } const data = await pdf.save(); return { filename: safeFilename(filename), mimeType: "application/pdf", data: data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer }; }
+import { PDFDocument, StandardFonts } from "pdf-lib";
+import type { DocumentMetadata, SkripsiDocument } from "./document-model";
+import { getTemplate } from "./template";
+import { buildToc } from "./toc";
+import { safeFilename, drawCenteredText, drawPageNumber, roman, drawTocEntries, type PageCursor } from "./pdf-helpers";
+import {
+  renderChapter, renderSection, renderSubchapter,
+  renderImage, renderReferences,
+  renderList, renderQuote, renderParagraph,
+} from "./pdf-block-renderers";
+import { renderTable } from "./pdf-table-renderer";
+
+// ─── Export Types ───────────────────────────────────────────────────────────
+
+export interface PdfExportResult {
+  filename: string;
+  mimeType: "application/pdf";
+  data: ArrayBuffer;
+}
+
+// ─── Page Layout Constants ──────────────────────────────────────────────────
+
+/** Standar BINUS: A4 portrait */
+const PAGE_WIDTH = 595.28;  // ~21 cm
+const PAGE_HEIGHT = 841.89; // ~29.7 cm
+
+/** Standar BINUS: margin kiri 4 cm, lainnya ~2.5 cm */
+const MARGIN_LEFT = 113.39;
+const MARGIN_TOP = 70.87;
+const MARGIN_BOTTOM = 70.87;
+const TEXT_WIDTH = PAGE_WIDTH - MARGIN_LEFT - 70.87;
+
+/** Standar BINUS: spasi 1.5 = 18pt */
+const BODY_LINE = 18;
+
+// ─── Cover Renderer ─────────────────────────────────────────────────────────
+
+/**
+ * Render halaman cover (sampul) sesuai template BINUS
+ */
+function renderCover(
+  pdf: Awaited<ReturnType<typeof PDFDocument.create>>,
+  document: SkripsiDocument,
+  fonts: Record<string, import("pdf-lib").PDFFont>,
+  meta: DocumentMetadata
+): void {
+  const cover = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
+  let y = PAGE_HEIGHT - MARGIN_TOP - 40;
+
+  // Judul dokumen
+  for (const line of document.title.split(/\n/).filter(Boolean)) {
+    y = drawCenteredText(cover, line.toUpperCase(), fonts.bold, 14, y, TEXT_WIDTH, MARGIN_LEFT);
+    y -= 4;
+  }
+  y -= 30;
+
+  // Judul bahasa Inggris (opsional)
+  if (meta.englishTitle) {
+    y = drawCenteredText(cover, meta.englishTitle, fonts.italic, 12, y, TEXT_WIDTH, MARGIN_LEFT);
+    y -= 12;
+  }
+  y -= 30;
+
+  // Subtitle standar
+  y = drawCenteredText(cover, "LAPORAN SKRIPSI", fonts.bold, 12, y, TEXT_WIDTH, MARGIN_LEFT);
+  y = drawCenteredText(cover, "Diajukan untuk memenuhi salah satu persyaratan", fonts.normal, 12, y, TEXT_WIDTH, MARGIN_LEFT);
+  y = drawCenteredText(cover, "dalam menyelesaikan program sarjana", fonts.normal, 12, y, TEXT_WIDTH, MARGIN_LEFT);
+  y -= 40;
+
+  // Info penulis
+  if (meta.authors?.length) {
+    const nim = meta.nim?.length ? ` (${meta.nim.join(", ")})` : "";
+    y = drawCenteredText(cover, `Oleh: ${meta.authors.join(", ")}${nim}`, fonts.normal, 12, y, TEXT_WIDTH, MARGIN_LEFT);
+    y -= 6;
+  }
+  if (meta.program) { y = drawCenteredText(cover, meta.program, fonts.normal, 12, y, TEXT_WIDTH, MARGIN_LEFT); y -= 6; }
+  if (meta.faculty) { y = drawCenteredText(cover, meta.faculty, fonts.normal, 12, y, TEXT_WIDTH, MARGIN_LEFT); y -= 6; }
+  y = drawCenteredText(cover, meta.institution ?? "Universitas Bina Nusantara", fonts.normal, 12, y, TEXT_WIDTH, MARGIN_LEFT);
+  if (meta.campus) { y = drawCenteredText(cover, meta.campus, fonts.normal, 12, y, TEXT_WIDTH, MARGIN_LEFT); }
+  y -= 40;
+
+  // Logo placeholder dan lokasi
+  y = drawCenteredText(cover, `(Logo Universitas)`, fonts.italic, 10, y, TEXT_WIDTH, MARGIN_LEFT);
+  y -= 30;
+  drawCenteredText(cover, `${meta.city ?? "Jakarta"}, ${meta.year ?? new Date().getFullYear()}`, fonts.normal, 12, y, TEXT_WIDTH, MARGIN_LEFT);
+}
+
+// ─── Front Matter Renderer ─────────────────────────────────────────────────
+
+/**
+ * Render Daftar Isi, Daftar Tabel, dan Daftar Gambar
+ */
+function renderFrontMatter(
+  pdf: Awaited<ReturnType<typeof PDFDocument.create>>,
+  toc: ReturnType<typeof buildToc>,
+  fonts: Record<string, import("pdf-lib").PDFFont>,
+  startPage: number
+): number {
+  let page = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
+  let pageNum = startPage + 1;
+  let y = PAGE_HEIGHT - MARGIN_TOP;
+
+  // Daftar Isi
+  y = drawCenteredText(page, "DAFTAR ISI", fonts.bold, 12, y, TEXT_WIDTH, MARGIN_LEFT);
+  y -= BODY_LINE;
+  y = drawTocEntries(page, toc.heading.map((e) => ({ number: e.number, title: e.title, level: e.level })), fonts, y, MARGIN_LEFT, BODY_LINE);
+  drawPageNumber(page, roman(pageNum), fonts, TEXT_WIDTH, MARGIN_LEFT, MARGIN_BOTTOM);
+
+  // Daftar Tabel
+  if (toc.tables.length > 0) {
+    page = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
+    pageNum++;
+    y = PAGE_HEIGHT - MARGIN_TOP;
+    y = drawCenteredText(page, "DAFTAR TABEL", fonts.bold, 12, y, TEXT_WIDTH, MARGIN_LEFT);
+    y -= BODY_LINE;
+    y = drawTocEntries(page, toc.tables, fonts, y, MARGIN_LEFT, BODY_LINE);
+    drawPageNumber(page, roman(pageNum), fonts, TEXT_WIDTH, MARGIN_LEFT, MARGIN_BOTTOM);
+  }
+
+  // Daftar Gambar
+  if (toc.figures.length > 0) {
+    page = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
+    pageNum++;
+    y = PAGE_HEIGHT - MARGIN_TOP;
+    y = drawCenteredText(page, "DAFTAR GAMBAR", fonts.bold, 12, y, TEXT_WIDTH, MARGIN_LEFT);
+    y -= BODY_LINE;
+    y = drawTocEntries(page, toc.figures, fonts, y, MARGIN_LEFT, BODY_LINE);
+    drawPageNumber(page, roman(pageNum), fonts, TEXT_WIDTH, MARGIN_LEFT, MARGIN_BOTTOM);
+  }
+
+  return pageNum - startPage;
+}
+
+// ─── Main Export Function ───────────────────────────────────────────────────
+
+/**
+ * Export SkripsiDocument ke PDF
+ * 
+ * @param document - Dokumen yang akan di-export
+ * @param filename - Nama file output (akan di-sanitize)
+ * @returns PdfExportResult dengan filename, mimeType, dan data
+ * @throws Error jika dokumen belum memiliki judul
+ */
+export async function exportPdf(
+  document: SkripsiDocument,
+  filename = "skripsiflow-document.pdf"
+): Promise<PdfExportResult> {
+  if (!document.title.trim()) {
+    throw new Error("Dokumen belum memiliki judul.");
+  }
+
+  // Setup
+  const pdf = await PDFDocument.create();
+  const fonts = {
+    normal: await pdf.embedFont(StandardFonts.TimesRoman),
+    bold: await pdf.embedFont(StandardFonts.TimesRomanBold),
+    italic: await pdf.embedFont(StandardFonts.TimesRomanItalic),
+    boldItalic: await pdf.embedFont(StandardFonts.TimesRomanBoldItalic),
+  };
+  void getTemplate(document.templateId);
+
+  const toc = buildToc(document);
+  const meta: DocumentMetadata = document.documentMetadata ?? {};
+
+  // 1) Cover
+  renderCover(pdf, document, fonts, meta);
+
+  // 2) Front matter
+  renderFrontMatter(pdf, toc, fonts, 1);
+
+  // 3) Body
+  let cursor: PageCursor = {
+    pdf,
+    page: pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT]),
+    y: PAGE_HEIGHT - MARGIN_TOP,
+    index: 1,
+  };
+  let bodyPageCount = 1;
+  let chapterNumber = 0;
+  let sectionNumber = 0;
+
+  for (const block of document.blocks) {
+    const label = String(bodyPageCount);
+
+    switch (block.type) {
+      case "chapter": {
+        chapterNumber++;
+        sectionNumber = 0;
+        const result = renderChapter(block, chapterNumber, cursor, fonts, bodyPageCount);
+        cursor = result.cursor;
+        bodyPageCount = result.bodyPageCount;
+        break;
+      }
+      case "section":
+        sectionNumber++;
+        cursor = renderSection(block, chapterNumber, sectionNumber, cursor, fonts, label);
+        break;
+      case "subchapter":
+        cursor = renderSubchapter(block, cursor, fonts, label);
+        break;
+      case "table":
+        cursor = renderTable(block, cursor, fonts, label);
+        break;
+      case "image":
+        cursor = renderImage(block, cursor, fonts, label);
+        break;
+      case "list":
+        cursor = renderList(block, cursor, fonts, document.templateId, label);
+        break;
+      case "quote":
+        cursor = renderQuote(block, cursor, fonts, document.templateId, label);
+        break;
+      case "reference":
+        cursor = renderReferences(block, document, cursor, fonts, document.templateId, label);
+        break;
+      default:
+        cursor = renderParagraph(block, cursor, fonts, document.templateId, label);
+        break;
+    }
+  }
+
+  // Serialize
+  const data = await pdf.save();
+  return {
+    filename: safeFilename(filename),
+    mimeType: "application/pdf",
+    data: data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer,
+  };
+}

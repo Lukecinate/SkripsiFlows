@@ -18,9 +18,20 @@
 - `lib/citation.ts`: parses references, extracts citation tokens, detects mismatch/duplicate/incomplete cases, and formats styles.
 - `lib/validation.ts`: creates quality score and export eligibility report.
 - `lib/template.ts`: maps block types to semantic template roles.
-- `lib/export-pdf.ts`: generates a paginated PDF and sanitizes output filenames.
-- `lib/export-docx.ts`: generates a valid OOXML DOCX package with proper relationships, styles, table grid, and page setup.
+- `lib/renumber.ts`: assigns heading, table, and figure numbering.
+- `lib/outline.ts`: builds document outline with chapter/section/subchapter hierarchy.
+- `lib/toc.ts`: builds table of contents entries for headings, tables, and figures.
 - `lib/session.ts`: validates versioned local snapshots, applies expiry/quota checks, and bounds undo/redo history.
+- `lib/export-docx.ts`: orchestrates DOCX export — builds block XML, cover, front matter, and assembles the ZIP package.
+- `lib/docx-xml-builders.ts`: XML escaping, spacing, run/paragraph/table builders for DOCX.
+- `lib/docx-templates.ts`: static OOXML package parts (content types, relationships, numbering, settings, footers, fonts, docProps).
+- `lib/export-pdf.ts`: orchestrates PDF export — cover, ToC, body, and file download.
+- `lib/pdf-text-utils.ts`: WinAnsi sanitization, control char filtering, text measurement for PDF.
+- `lib/pdf-drawing-utils.ts`: PDF drawing primitives (lines, rectangles, cell backgrounds).
+- `lib/pdf-page-utils.ts`: page management, margin/position calculations, page break detection.
+- `lib/pdf-block-renderers.ts`: renders paragraphs, headings, lists, quotes, and chapter blocks to PDF.
+- `lib/pdf-table-renderer.ts`: renders tables to PDF with column sizing and cell borders.
+- `lib/pdf-helpers.ts`: barrel export for PDF sub-modules.
 
 ## Components
 - `components/workspace/StructurePanel.tsx`: left sidebar with block navigation, drag-and-drop, multi-select, inline editing.
