@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { exportDocx } from "../../../../lib/export-docx";
+import { checkRateLimit, getClientIp } from "../../../../lib/rate-limit";
 import type { SkripsiDocument } from "../../../../lib/document-model";
 
 export const runtime = "nodejs";
@@ -9,14 +10,15 @@ export const revalidate = 0;
 export const fetchCache = "force-no-store";
 export const preferredRegion = "auto";
 
-
-function getClientIp(req: NextRequest): string {
-  const forwarded = req.headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
-  return req.headers.get("x-real-ip") ?? "unknown";
-}
-
 export async function POST(req: NextRequest) {
+  const contentLength = Number(req.headers.get("content-length") ?? 0);
+  if (contentLength > 5 * 1024 * 1024) {
+    return NextResponse.json(
+      { error: "Payload too large" },
+      { status: 413 }
+    );
+  }
+
   const ip = getClientIp(req);
   if (!checkRateLimit(ip)) {
     return NextResponse.json(

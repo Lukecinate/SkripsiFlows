@@ -19,4 +19,24 @@ export function parseReferences(input: string): ReferenceEntry[] { return input.
 export function extractCitationTokens(content: string): string[] { const normalized = content.replace(/\[([^\]]+)\]/g, (m, inner) => `[${inner.replace(/\s+/g, "")}]`); const numericTokens: string[] = []; let numericMatch = numericCitationPattern.exec(normalized); while (numericMatch) { numericTokens.push(numericMatch[0]); numericMatch = numericCitationPattern.exec(normalized); } numericCitationPattern.lastIndex = 0; const authorYearTokens: string[] = []; let authorYearMatch = authorYearPattern.exec(content); while (authorYearMatch) { authorYearTokens.push(authorYearMatch[0]); authorYearMatch = authorYearPattern.exec(content); } authorYearPattern.lastIndex = 0; return [...numericTokens, ...authorYearTokens]; }
 export function analyzeCitations(content: string, references: ReferenceEntry[]): CitationAnalysis { const tokens = extractCitationTokens(content); const citedReferenceIds = references.filter((reference, index) => tokens.some((token) => token.includes(`[${index + 1}]`) || (reference.year && token.includes(String(reference.year))))).map((reference) => reference.id); const issues: CitationIssue[] = []; const seen = new Map<string, string>(); references.forEach((reference) => { const key = `${reference.title.toLowerCase()}|${reference.year ?? ""}`; if (seen.has(key)) issues.push({ code: "DUPLICATE_REFERENCE", message: "Referensi tampak duplikat.", referenceId: reference.id, severity: "warning" }); else seen.set(key, reference.id); if (reference.completeness < 1) issues.push({ code: "INCOMPLETE_REFERENCE", message: "Data referensi belum lengkap.", referenceId: reference.id, severity: "warning" }); if (!citedReferenceIds.includes(reference.id)) issues.push({ code: "UNCITED_REFERENCE", message: "Referensi belum ditemukan dalam sitasi isi.", referenceId: reference.id, severity: "warning" }); }); tokens.filter((token) => /^\[/.test(token)).forEach((token) => { const numbers = token.match(/\d+/g)?.map(Number) ?? []; numbers.forEach((number) => { if (!references[number - 1]) issues.push({ code: "MISSING_REFERENCE", message: `Sitasi ${token} belum memiliki referensi nomor ${number}.`, token, severity: "error" }); }); }); return { references, citedReferenceIds, issues }; }
 function authorText(reference: ReferenceEntry): string { return reference.authors.length ? reference.authors.join(", ") : "[Penulis perlu dilengkapi]"; }
-export function formatReference(reference: ReferenceEntry, style: CitationStyle, index: number): string { const year = reference.year ? `(${reference.year})` : "(n.d.)"; const title = reference.title || "[Judul perlu dilengkapi]"; if (style === "ieee" || style === "vancouver") return `[${index + 1}] ${authorText(reference)}, \u201c${title},\u201d ${reference.doi ? `doi: ${reference.doi}` : reference.url ?? ""}.`; if (style === "chicago") return `${authorText(reference)}. ${year}. \u201c${title}.\u201d ${reference.url ?? reference.doi ?? ""}`.trim(); return `${authorText(reference)}. ${year}. ${title}. ${reference.doi ? `https://doi.org/${reference.doi}` : reference.url ?? ""}`.trim(); }
+export function formatReference(reference: ReferenceEntry, style: CitationStyle, index: number): string {
+  const year = reference.year ? String(reference.year) : "n.d.";
+  const author = authorText(reference);
+  const title = reference.title || "[Judul perlu dilengkapi]";
+  const doi = reference.doi ? `https://doi.org/${reference.doi}` : "";
+  const url = reference.url ?? "";
+  switch (style) {
+    case "apa-7":
+      return `${author}. (${year}). ${title}. ${doi || url}`.replace(/\s+$/, "");
+    case "ieee":
+      return `[${index + 1}] ${author}, \u201c${title},\u201d ${doi || url}.`;
+    case "vancouver":
+      return `${index + 1}. ${author}. ${title}. ${doi || url}`.replace(/\s+$/, "");
+    case "harvard":
+      return `${author} (${year}) \u2018${title}\u2019. ${doi || url}`.replace(/\s+$/, "");
+    case "chicago":
+      return `${author}. (${year}). \u201c${title}.\u201d ${doi || url}`.replace(/\s+$/, "");
+    default:
+      return `${author}. (${year}). ${title}. ${doi || url}`.replace(/\s+$/, "");
+  }
+}

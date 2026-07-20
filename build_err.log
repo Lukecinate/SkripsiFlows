@@ -1,0 +1,31 @@
+▲ Next.js 16.2.10 (Turbopack)
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 1 errors:
+./lib/workers/ingest.worker.js:12:13
+Expected ',', got '{'
+  [90m10 |[0m [36mimport[0m { ingestSource } [36mfrom[0m [32m"../ingestion"[0m;
+  [90m11 |[0m [36mimport[0m { renumberDocument } [36mfrom[0m [32m"../renumber"[0m;
+[31m[1m>[0m [90m12 |[0m [36mimport[0m [36mtype[0m { [33mSourceInput[0m, [33mIngestionResult[0m } [36mfrom[0m [32m"../ingestion"[0m;
+  [90m   |[0m             [31m[1m^[0m
+  [90m13 |[0m [36mimport[0m { createWorkerHandler } [36mfrom[0m [32m"../worker-utils"[0m;
+  [90m14 |[0m
+  [90m15 |[0m createWorkerHandler({
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component SSR:
+    ./lib/workers/ingest.worker.js
+    ./app/workspace/page.tsx [Client Component SSR]
+    ./app/workspace/page.tsx [Server Component]
+
+  Client Component Browser:
+    ./lib/workers/ingest.worker.js [Client Component Browser]
+    ./app/workspace/page.tsx [Client Component Browser]
+    ./app/workspace/page.tsx [Server Component]
+
+
+    at <unknown> (./lib/workers/ingest.worker.js:12:13)

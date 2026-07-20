@@ -14,7 +14,7 @@ interface DocumentPreviewProps {
   selectedIds: string[];
 }
 
-import { parseInlineMarkdown } from "../../lib/ingestion";
+import { parseInlineMarkdown, type InlineMark } from "../../lib/ingestion";
 
 function parseInline(block: DocumentBlock): InlineSegment[] {
   try {
@@ -24,10 +24,10 @@ function parseInline(block: DocumentBlock): InlineSegment[] {
   return parseInlineMarkdown(block.content);
 }
 
-function stripNum(s){if(!s)return"";return s.replace(/^[\d.\sivxlcdm]+/,"")}
+function stripNum(s: string){if(!s)return"";return s.replace(/^[\d.\sivxlcdm]+/,"")}
 const InlineRun = memo(function InlineRun({ segment }: { segment: InlineSegment }) {
   let node: React.ReactNode = segment.text;
-  if (segment.marks.includes("code")) node = <code className="inline-code">{node}</code>;
+  if (segment.marks.includes("code" as InlineMark)) node = <code className="inline-code">{node}</code>;
   if (segment.marks.includes("bold")) node = <strong>{node}</strong>;
   if (segment.marks.includes("italic")) node = <em>{node}</em>;
   if (segment.marks.includes("underline")) node = <u>{node}</u>;
@@ -53,10 +53,10 @@ const WordBlock = memo(function WordBlock(props: {
             aria-label="Edit bab" />
         ) : (
           <>
-            <p style={{ fontFamily: style.font, fontSize: "16pt", fontWeight: 700, textAlign: "center", margin: "0 0 0.3cm", letterSpacing: 1 }}>
+            <p style={{ fontFamily: style.font, fontSize: "16pt", fontWeight: 700, textAlign: "center", margin: "0 0 0.3cm", letterSpacing: 1, overflowWrap: "break-word", wordBreak: "break-word" }}>
               {(block.metadata?.headingNumber || "BAB").toUpperCase()}
             </p>
-            <p style={{ fontFamily: style.font, fontSize: "16pt", fontWeight: 700, textAlign: "center", textTransform: "uppercase", margin: 0 }}>
+            <p style={{ fontFamily: style.font, fontSize: "16pt", fontWeight: 700, textAlign: "center", textTransform: "uppercase", margin: 0, overflowWrap: "break-word", wordBreak: "break-word" }}>
               {segments.map((s, i) => <InlineRun key={i} segment={s} />)}
             </p>
           </>
@@ -80,7 +80,7 @@ const WordBlock = memo(function WordBlock(props: {
     return (
       <p data-block-id={block.id} onClick={onSelect}
         style={{ fontFamily: style.font, fontSize: "14pt", fontWeight: 700, textAlign: "left", margin, cursor: "pointer" }}>
-        {num ? <span style={{ color: "#7c9d40", fontWeight: 700, marginRight: 6 }}>{num}</span> : null}
+        {num ? <span style={{ color: "#7c9d40", fontWeight: 700, marginRight: 6, overflowWrap: "break-word", wordBreak: "break-word" }}>{num}</span> : null}
         {firstLine}
       </p>
     );
@@ -126,7 +126,7 @@ const WordBlock = memo(function WordBlock(props: {
     const lines = block.content.split(/\n/).filter(Boolean);
     const dataRows = lines.filter(l => !/^\|?\s*[-:\s|]+\s*\|?$/.test(l.trim()));
     return (
-      <div data-block-id={block.id} onClick={onSelect} style={{ margin: "0.8em 0" }}>
+      <div data-block-id={block.id} onClick={onSelect} style={{ margin: "0.8em 0", overflowX: "auto" }}>
         <table className="preview-table" style={{ fontFamily: style.font }}>
           <tbody>
             {dataRows.map((row, ri) => {
@@ -173,7 +173,7 @@ const WordBlock = memo(function WordBlock(props: {
 
   return (
     <p data-block-id={block.id} onClick={onSelect}
-      style={{ fontFamily: style.font, fontSize: "12pt", lineHeight: 1.5, textAlign: "justify", textIndent: "1.27cm", margin: "0.3em 0", cursor: "pointer" }}>
+      style={{ fontFamily: style.font, fontSize: "12pt", lineHeight: 1.5, textAlign: "justify", textIndent: "1.27cm", margin: "0.3em 0", cursor: "pointer", overflowWrap: "break-word", wordBreak: "break-word" }}>
       {segments.map((s, i) => <InlineRun key={i} segment={s} />)}
     </p>
   );

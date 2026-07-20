@@ -35,16 +35,8 @@ export default function WorkspacePage() {
   const [isDragging, setIsDragging] = useState(false);
   const dragDepth = useRef(0);
   const rafRef = useRef<number | null>(null);
-  const workerRef = useRef<Worker | null>(null);
-  const pendingIdRef = useRef(0);
+const pendingIdRef = useRef(0);
 
-  useEffect(() => {
-    workerRef.current = new Worker(
-      new URL("../../lib/workers/ingest.worker.ts", import.meta.url),
-      { type: "module" }
-    );
-    return () => { workerRef.current?.terminate(); workerRef.current = null; };
-  }, []);
 
   const finishProgress = (next: Stage) => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -73,81 +65,45 @@ export default function WorkspacePage() {
 
   useEffect(() => () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); }, []);
 
-  const persist = (content: string, kind: "paste" | "markdown" | "plain-text", name?: string, extension?: string) => {
+    const persist = (content: string, kind: "paste" | "markdown" | "plain-text", name?: string, extension?: string) => {
     setStage("parsing");
     animateProgress(60);
 
-    const worker = workerRef.current;
-    const requestId = ++pendingIdRef.current;
-
-    if (worker) {
-      const handler = (event: MessageEvent) => {
-        if (event.data.id !== requestId) return;
-        worker.removeEventListener("message", handler);
-        try {
-          const result = event.data.result ?? event.data.error;
-          if (event.data.error || !result?.document) {
-            const issues = result?.issues ?? [{ message: "Gagal memproses bahan." }];
-            setMessage(issues.map((i: { message: string }) => i.message).join(" "));
-            setStage("idle");
-            setProgress(0);
-            return;
-          }
-          const doc: SkripsiDocument = {
-            ...result.document,
-            citationStyle: "apa-7",
-            documentMetadata: { institution: "Universitas Bina Nusantara", city: "Jakarta", year: new Date().getFullYear() },
-          };
-          const snapshot = createSnapshot(doc, paste, "APA 7");
-          try {
-            window.localStorage.setItem(SESSION_KEY, serializeSnapshot(snapshot));
-          } catch {
-            setMessage("Session terlalu besar untuk disimpan di browser.");
-            setStage("idle");
-            setProgress(0);
-            return;
-          }
-          finishProgress("redirecting");
-          window.setTimeout(() => router.push("/workspace/editor"), 120);
-        } catch {
-          setMessage("Gagal memproses bahan. Coba lagi dengan file yang berbeda.");
-          setStage("idle");
-          setProgress(0);
-        }
-      };
-      worker.addEventListener("message", handler);
-      worker.postMessage({ id: requestId, method: "ingest", args: [{ content, kind, name, extension }] });
-    } else {
-      // Fallback: run synchronously if worker failed to initialize
-      try {
-        const { ingestSource } = require("../../lib/ingestion");
-        const { renumberDocument } = require("../../lib/renumber");
-        const result = ingestSource({ content, kind, name, extension });
-        if (!result.document) {
-          setMessage(result.issues.map((i: { message: string }) => i.message).join(" "));
-          setStage("idle");
-          setProgress(0);
-          return;
-        }
-        result.document = renumberDocument(result.document);
-        const doc: SkripsiDocument = {
-          ...result.document,
-          citationStyle: "apa-7",
-          documentMetadata: { institution: "Universitas Bina Nusantara", city: "Jakarta", year: new Date().getFullYear() },
-        };
-        const snapshot = createSnapshot(doc, paste, "APA 7");
-        window.localStorage.setItem(SESSION_KEY, serializeSnapshot(snapshot));
-        finishProgress("redirecting");
-        window.setTimeout(() => router.push("/workspace/editor"), 120);
-      } catch {
-        setMessage("Gagal memproses bahan. Coba lagi dengan file yang berbeda.");
+    try {
+      const { ingestSource } = require("../../lib/ingestion");
+      const { renumberDocument } = require("../../lib/renumber");
+      const result = ingestSource({ content, kind, name, extension });
+      if (!result.document) {
+        setMessage(result.issues.map((i: { message: string }) => i.message).join(" "));
         setStage("idle");
         setProgress(0);
+        return;
       }
+      result.document = renumberDocument(result.document);
+      const doc: SkripsiDocument = {
+        ...result.document,
+        citationStyle: "apa-7",
+        documentMetadata: { institution: "Universitas Bina Nusantara", city: "Jakarta", year: new Date().getFullYear() },
+      };
+      const snapshot = createSnapshot(doc, paste, "APA 7");
+      try {
+        window.localStorage.setItem(SESSION_KEY, serializeSnapshot(snapshot));
+      } catch {
+        setMessage("Session terlalu besar untuk disimpan di browser.");
+        setStage("idle");
+        setProgress(0);
+        return;
+      }
+      finishProgress("redirecting");
+      window.setTimeout(() => router.push("/workspace/editor"), 120);
+    } catch {
+      setMessage("Gagal memproses bahan. Coba lagi dengan file yang berbeda.");
+      setStage("idle");
+      setProgress(0);
     }
   };
 
-  const readFile = (file: File, ext: string) => {
+const readFile = (file: File, ext: string) => {
     if (!FILE_EXT.includes(ext)) {
       setMessage("Gunakan file .md, .markdown, atau .txt");
       return;

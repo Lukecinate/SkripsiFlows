@@ -17,3 +17,7 @@ SkripsiFlows/
 doc-nexts/*.png
 doc-nexts/*.js
 doc-nexts/guidelines.txt
+
+next-env.d.ts
+
+*.log

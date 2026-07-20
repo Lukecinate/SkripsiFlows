@@ -6,7 +6,7 @@ import { validateDocument } from "../../../lib/validation";
 import type { DocumentBlock, SkripsiDocument } from "../../../lib/document-model";
 import { renumberDocument } from "../../../lib/renumber";
 import ReferencePreview from "../../../components/workspace/ReferencePreview";
-import FormatPicker from "../../../components/workspace/FormatPicker";
+import FormatPicker, { type ExportFormat } from "../../../components/workspace/FormatPicker";
 import AnalysisModal from "../../../components/workspace/AnalysisModal";
 import ConfirmDialog from "../../../components/workspace/ConfirmDialog";
 import StructurePanel from "../../../components/workspace/StructurePanel";
